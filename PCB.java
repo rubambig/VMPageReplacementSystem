@@ -27,8 +27,8 @@ import java.util.*;
      this.pageTable = new Hashtable<Integer, Integer>(capacity);
    }
 
-   /***************************************
-    * Update the page table for the process
+   /****************************************
+    * Update the page table for the process.
     ***************************************/
     public void updateTable (int page, int frame) {
       this.pageTable.put(page,frame);
