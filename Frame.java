@@ -1,55 +1,55 @@
 import java.util.*;
 /***************************
- * A frame data structure
- * @author Gloire Rubambiza
- * @since 11/12/2017
- **************************/
- public class Frame {
+* A frame data structure
+* @author Gloire Rubambiza
+* @since 11/12/2017
+**************************/
+public class Frame {
 
-   /** The frame number for this frame. */
-   //private int frameNumber;
+  /** The frame number for this frame. */
+  //private int frameNumber;
 
-   /** The PID of the process associated with the frame. */
-   private int processPID;
+  /** The PID of the process associated with the frame. */
+  private int processPID;
 
-   /** The page number associated with the frame. */
-   private int page;
+  /** The page number associated with the frame. */
+  private int page;
 
-   /**********************************************
-    * Instantiates a frame with given information.
-    * To be used as part of frame table.
-    *********************************************/
-    public Frame () {
-      //this.frameNumber = fnumber;
-      this.processPID = -1;
-      this.page = -1;
-    }
+  /**********************************************
+  * Instantiates a frame with given information.
+  * To be used as part of frame table.
+  *********************************************/
+  public Frame () {
+    //this.frameNumber = fnumber;
+    this.processPID = -1;
+    this.page = -1;
+  }
 
-    /********************************************
-     * Get the process associated with the frame.
-     ********************************************/
-     public int getPID () {
-       return this.processPID;
-     }
+  /********************************************
+  * Get the process associated with the frame.
+  ********************************************/
+  public int getPID () {
+    return this.processPID;
+  }
 
-     /*****************************************
-      * Get the page associated with the frame.
-      *****************************************/
-      public int getPage () {
-        return this.page;
-      }
+  /*****************************************
+  * Get the page associated with the frame.
+  *****************************************/
+  public int getPage () {
+    return this.page;
+  }
 
-      /*******************************************
-       * Update the page associated with the frame.
-       ********************************************/
-       public void updatePage ( int page ) {
-         this.page = page;
-       }
+  /*******************************************
+  * Update the page associated with the frame.
+  ********************************************/
+  public void updatePage ( int page ) {
+    this.page = page;
+  }
 
-       /***********************************************
-        * Update the process associated with the frame.
-        ***********************************************/
-        public void updateProcess ( int pid ) {
-          this.processPID = pid;
-        }
- }
+  /***********************************************
+  * Update the process associated with the frame.
+  ***********************************************/
+  public void updateProcess ( int pid ) {
+    this.processPID = pid;
+  }
+}
