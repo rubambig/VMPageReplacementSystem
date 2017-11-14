@@ -32,6 +32,8 @@ public class ProcessTable {
   * - Check if a given page is already in memory (associated with a frame)
   * - Update the page table of a process if a page fault occurs
   * - Send the current state of a PCB as requested by controller
+  * - Report the size of the page table for a process after each input run (pageTable.size)
+  * - Report the totla number of memory references made by each process
   */
 
 }

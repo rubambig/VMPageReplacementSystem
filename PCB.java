@@ -28,10 +28,19 @@ public class PCB {
   }
 
   /****************************************
-  * Update the page table for the process.
+   * Update the page table for the process.
   ***************************************/
   public void updateTable (int page, int frame) {
     this.pageTable.put(page,frame);
+  }
+
+  /************************************************
+   * Reports the size of the PCB's page table 
+   * at the completion of each memory reference run
+   * @return the size of the page table currently
+  ************************************************/
+  public int pageSize () {
+    return this.pagetTable.size();
   }
 
 }
