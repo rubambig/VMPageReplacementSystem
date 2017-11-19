@@ -88,7 +88,7 @@ public class FrameTable {
   /**************************************************
   * Inspects the frame table as it currently stands.
   **************************************************/
-  public void sendCurrentState() {
+  public void printCurrentState() {
     int i,j;
     for ( i = 0; i < max; i++ ) {
       int pid = this.frameTable[i].getPID();

@@ -35,14 +35,31 @@ public class Controller {
     this.frameTable = new FrameTable();
   }
 
+  /***********************************************
+  * Updates the references count for the process.
+  * @param pid is the PID of the process.
+  ***********************************************/
+  public void updateProcessRefCount ( int pid ) {
+    this.processTable.updatePCBRefCount(pid);
+  }
   /******************************************************
   * Checks if the page is already in the table.
   * @param pid is the process that owns the page.
   * @param page the page that was referenced.
   * @return the presence of the page in the frame table.
   ******************************************************/
-  public boolean checkPageInTable(int pid, int page){
+  public boolean checkPageInTable(int pid, int page) {
     return this.frameTable.checkPage(pid, page);
+  }
+
+  /**********************************************************
+  * Updates page table of the given process with new entries.
+  * @param exits tells where the page is already in the table.
+  * @param pid is the PID of the process.
+  * @param page is the page to be added/replaced in the table.
+  ************************************************************/
+  public void updatePageTable(boolean exists, int pid, int page, int frame) {
+    this.processTable.updatePCB(exists, pid, page, frame);
   }
 
   /****************************************************
@@ -61,12 +78,28 @@ public class Controller {
     this.frameTable.insertFrameEntry(frame, process, page);
   }
 
-  /************************************************
+  /**********************************************
   * Prints the current state of the frame table.
   ***********************************************/
-  public void printState() {
-    this.frameTable.sendCurrentState();
+  public void printFrameTableState() {
+    this.frameTable.printCurrentState();
   }
+
+  /********************************************************
+  * Prints the current state of the given PCB's page table.
+  * @param pid is the PID of the process.
+  *********************************************************/
+  public void printPageTableState( int pid ) {
+    this.processTable.printPageTable(pid);
+  }
+
+  /*****************************************************
+  * Prints the total memory references for each process.
+  ******************************************************/
+  public void printFinalStats () {
+    this.processTable.printStats();
+  }
+
 
   public static void main (String[] args) {
 
@@ -87,15 +120,20 @@ public class Controller {
 
         if ( ctl.checkPageInTable(procNum, pageNum) ) {
           System.out.println("The page is already in physical memory!\n");
-        } else if ( freeFrame >= 0) {
+          ctl.updateProcessRefCount(procNum);
+        } else if ( freeFrame >= 0) { // Check for free frames
+          ctl.updateProcessRefCount(procNum);
           ctl.updateFrameTable(freeFrame, procNum, pageNum);
-        } else { // No free frames
+          ctl.updatePageTable(false, procNum, pageNum, freeFrame);
+        } else { // Find a victim and replace them
+          ctl.updateProcessRefCount(procNum);
           System.out.println("Page not in memory and No more free frames\n");
         }
 
-        // Inspect the frame table as it currently stands.
+        // Inspect the frame/page table as it currently stands.
         System.out.println("Frame# ProcID  Page#");
-        ctl.printState();
+        ctl.printFrameTableState();
+        ctl.printPageTableState(procNum);
 
       }
     } catch ( IOException e) {
@@ -103,5 +141,8 @@ public class Controller {
       e.printStackTrace();
       System.exit(1);
     }
+
+    // Report final statistics
+    ctl.printFinalStats();
   }
 }

@@ -19,17 +19,74 @@ public class ProcessTable {
   ************************************************/
   public ProcessTable () {
     this.pcbTable = new PCB [max];
-    int i;
+    int i, j = 1;
 
     // Creates each new PCB
     for ( i = 0; i < max; i++ ) {
-      this.pcbTable[i] = new PCB (i);
+      this.pcbTable[i] = new PCB (j);
+      j++;
+    }
+  }
+
+  /************************************************************
+  * Updates page table of the given process with new entries.
+  * @param inTable tells where the page is being added/replaced
+  * @param pid is the PID of the process.
+  * @param page is the page to be added/replaced in the table.
+  * @return true if the update was successful, false otherwise.
+  *************************************************************/
+  public void updatePCB(boolean inTable, int pid, int page, int frame) {
+    int i;
+    for ( i = 0; i < 10; i++ ) {
+      if ( this.pcbTable[i].getPID() == pid ) {
+        System.out.println("Got passed pair" + page + "\t" + frame + "\n");
+        this.pcbTable[i].updateTable(inTable, page, frame);
+      }
+    }
+  }
+
+  /***********************************************
+  * Updates the references count for the process.
+  * @param pid is the PID of the process.
+  ***********************************************/
+  public void updatePCBRefCount ( int pid ) {
+    int i;
+    for ( i = 0; i < max; i++ ) {
+      if ( this.pcbTable[i].getPID() == pid ) {
+        this.pcbTable[i].updateRefCount();
+      }
+    }
+  }
+
+  /********************************************************
+  * Prints the current state of the PCB's page table.
+  * @param pid is the PID of the process.
+  *********************************************************/
+  public void printPageTable( int pid ) {
+    System.out.println("Page Table for Process " + pid + "\n");
+    int i;
+    for ( i = 0; i < max; i++ ) {
+      if ( this.pcbTable[i].getPID() == pid ) {
+        this.pcbTable[i].printTable();
+      }
+    }
+  }
+
+  /*****************************************************
+  * Prints the total memory references for each process.
+  ******************************************************/
+  public void printStats () {
+    int i = 0;
+    for (i = 0; i < max; i++) {
+      int pid = this.pcbTable[i].getPID();
+      //System.out.println("Got process #" + pid + "and i is " + i + "\n");
+      int total = this.pcbTable[i].getTotalReferences();
+      System.out.println("Process " + pid + ", Total Refs: " + total + "\n");
     }
   }
 
   /**
   * TO-DO
-  * - Check if a given page is already in memory (associated with a frame)
   * - Update the page table of a process if a page fault occurs
   * - Send the current state of a PCB as requested by controller
   * - Report the size of the page table for a process after each input run (pageTable.size)
