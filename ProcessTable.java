@@ -23,7 +23,7 @@ public class ProcessTable {
 
     // Creates each new PCB
     for ( i = 0; i < max; i++ ) {
-      pcbTable[i] = new PCB (i);
+      this.pcbTable[i] = new PCB (i);
     }
   }
 

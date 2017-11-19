@@ -35,12 +35,12 @@ public class PCB {
   }
 
   /************************************************
-   * Reports the size of the PCB's page table 
+   * Reports the size of the PCB's page table
    * at the completion of each memory reference run
    * @return the size of the page table currently
   ************************************************/
   public int pageSize () {
-    return this.pagetTable.size();
+    return this.pageTable.size();
   }
 
 }
