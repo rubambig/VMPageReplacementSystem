@@ -69,6 +69,22 @@ public class Controller {
     return this.frameTable.getFreeFrame();
   }
 
+  /************************************************************
+  * Searches for which frame is associated with a PID/page pair.  
+  * @return the frame number associated with the PID/page pair.
+  /************************************************************/
+  public int searchAssociatedFrame(int pid, int page) {
+    return this.frameTable.searchFrame(pid, page);
+  }
+
+  /***************************************
+  * Adds a frame to the replacement queue.
+  ****************************************/
+  public void addCandidateFrame(int frame) {
+    this.frameTable.addCandidate(frame);
+  }
+
+
   /*****************************************************
   * Updates the frame table with a new frame as space
   * allows or page faults occurs.
@@ -115,16 +131,27 @@ public class Controller {
         int pageNum = Integer.parseInt(line.substring(4,10),2);
         System.out.println("Page referenced: " + pageNum + "\n");
 
-        // Save the new memory reference
+        // Check if there is a free frame.
         int freeFrame = ctl.checkFreeFrame();
 
         if ( ctl.checkPageInTable(procNum, pageNum) ) {
+	  // Print message to the user. 
           System.out.println("The page is already in physical memory!\n");
           ctl.updateProcessRefCount(procNum);
+          
+          // Search which frame is associated with the process/page pair
+          int frameOfInterest = ctl.searchAssociatedFrame(procNum, pageNum);
+          System.out.println("The frame you want is " + frameOfInterest + "\n");
+          
+          // Add the reference frame to LRU Queue
+	  ctl.addCandidateFrame(frameOfInterest);
+      
         } else if ( freeFrame >= 0) { // Check for free frames
+
           ctl.updateProcessRefCount(procNum);
           ctl.updateFrameTable(freeFrame, procNum, pageNum);
           ctl.updatePageTable(false, procNum, pageNum, freeFrame);
+
         } else { // Find a victim and replace them
           ctl.updateProcessRefCount(procNum);
           System.out.println("Page not in memory and No more free frames\n");

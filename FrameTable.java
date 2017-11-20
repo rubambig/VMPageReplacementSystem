@@ -19,12 +19,16 @@ public class FrameTable {
   /** The list of free frames in the system. */
   private boolean [] freeFrameList;
 
+  /** The Queue for deciding which frame to vacate for a new page reference. */
+  private PriorityQueue<Integer> kicker;
+
   /*************************************
   * Instantiates an array of 16 frames
   *************************************/
   public FrameTable () {
     this.frameTable = new Frame [max];
     this.freeFrameList = new boolean [max];
+    kicker = new PriorityQueue<Integer>(max);
     int i;
 
     // Creates each new frame
@@ -89,12 +93,52 @@ public class FrameTable {
   * Inspects the frame table as it currently stands.
   **************************************************/
   public void printCurrentState() {
-    int i,j;
+    int i;
     for ( i = 0; i < max; i++ ) {
       int pid = this.frameTable[i].getPID();
       int page = this.frameTable[i].getPage();
       System.out.println(i + "\t" + pid + "\t" + page + "\n");
     }
+  }
+
+  /***************************************
+  * Adds a frame to the replacement queue.
+  ****************************************/
+  public boolean addCandidate(int frame) {
+    try {
+      return this.kicker.add(frame);
+    } catch ( IllegalStateException e) {
+      System.err.println("Cannot add anymore elements to queue!\n");
+      System.out.println("Error:" + e );
+      return false;
+    }
+  }
+
+  /************************************************************
+  * Searches for which frame is associated with a PID/page pair. 
+  * @param pid is the PID of the process owning the frame.
+  * @param page is the page located at the frame. 
+  * @return the frame number associated with the PID/page pair.
+  /************************************************************/
+  public int searchFrame(int pPid, int pPage) {
+    int i;
+    for ( i = 0; i < max; i++ ) {
+      int pid = this.frameTable[i].getPID();
+      int page = this.frameTable[i].getPage();
+      if ( (pid == pPid) && (page == pPage) ) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  
+  /********************************************
+  * Picks a candidate for page replacement.
+  * Removes it from the head of the queue.
+  * @return the frame that needs to be updated.
+  *********************************************/
+  public int pickLRUCandidate () {
+    return this.kicker.poll();
   }
 
   /**
