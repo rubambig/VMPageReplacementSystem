@@ -60,8 +60,9 @@ public class PCB {
   * -values-of-a-hashtable
   *********************************************/
   public void printTable() {
+    System.out.println("Page     Frame");
     for ( Integer key : this.pageTable.keySet() ) {
-      System.out.println(key + " -> " + this.pageTable.get(key) + "\n");
+      System.out.println(key + "    ->    " + this.pageTable.get(key) );
     }
   }
 

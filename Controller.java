@@ -54,7 +54,10 @@ public class Controller {
 
   /**********************************************************
   * Updates page table of the given process with new entries.
-  * @param exits tells where the page is already in the table.
+  * If the page exists, the function is used to remove the
+  * entry for a process whose frame has been chose as a
+  * victim. Otherwise, we're inserting the frame/page pair.
+  * @param exists tells where the page is already in the table.
   * @param pid is the PID of the process.
   * @param page is the page to be added/replaced in the table.
   ************************************************************/
@@ -71,8 +74,8 @@ public class Controller {
 
   /************************************************************
   * Searches for which frame is associated with a PID/page pair.
-  * The function is used when the page is already in memory or 
-  * a potential replacement.   
+  * The function is used when the page is already in memory or
+  * a potential replacement.
   * @return the triple of PID,page, and frame number;
   /************************************************************/
   public int [] searchAssociatedFrame(int pid, int page) {
@@ -95,7 +98,7 @@ public class Controller {
   }
 
   /*******************************************
-  * Reports the PID/page pair associated with 
+  * Reports the PID/page pair associated with
   * a victim frame.
   * @param frame is the frame associated with the pair
   * @return the PID and page of the victims
@@ -103,7 +106,6 @@ public class Controller {
   public int [] searchVictimPair (int frame ) {
     return this.frameTable.searchVictims(frame);
   }
-
 
   /*****************************************************
   * Updates the frame table with a new frame as space
@@ -136,7 +138,6 @@ public class Controller {
     this.processTable.printStats();
   }
 
-
   public static void main (String[] args) {
 
     Controller ctl = new Controller();
@@ -155,17 +156,17 @@ public class Controller {
         int freeFrame = ctl.checkFreeFrame();
 
         if ( ctl.checkPageInTable(procNum, pageNum) ) {
-	  // Print message to the user. 
+          // Print message to the user and updated reference count.
           System.out.println("The page is already in physical memory!\n");
           ctl.updateProcessRefCount(procNum);
-          
+
           // Search which frame is associated with the process/page pair
           int frameOfInterest = (ctl.searchAssociatedFrame(procNum, pageNum))[0];
-          System.out.println("The frame you want is " + frameOfInterest + "\n");
-          
+          // System.out.println("The frame you want is " + frameOfInterest + "\n");
+
           // Add the reference frame to LRU Queue
-	  ctl.addCandidateFrame(frameOfInterest);
-      
+          ctl.addCandidateFrame(frameOfInterest);
+
         } else if ( freeFrame >= 0) { // Check for free frames
 
           ctl.updateProcessRefCount(procNum);
@@ -173,32 +174,29 @@ public class Controller {
           ctl.updatePageTable(false, procNum, pageNum, freeFrame);
 
           // Add the reference frame to LRU Queue
-	  ctl.addCandidateFrame(freeFrame);
+          ctl.addCandidateFrame(freeFrame);
 
         } else { // Find a victim and replace them
           ctl.updateProcessRefCount(procNum);
           System.out.println("PAGE FAULT!!\n");
-	  
-          // Find the victim and 
+
+          // Find the victim and
           int victim = ctl.pickVictim();
-          
+
           // Send the victim a message to update their page table.
           int [] replacementPair = ctl.searchVictimPair(victim);
           int pid = replacementPair[0];
           int page = replacementPair[1];
           ctl.updatePageTable(true, pid, page, victim);
-          System.out.println("Old entry "+ pid + " " + page + victim+ "\n");
 
-	  // Send a message to the replacng process to update their page table.
-	  ctl.updatePageTable(false, procNum, pageNum, victim);
-          System.out.println("New entry:" + procNum + pageNum + victim + "\n");
+          // Send a message to the replacng process to update their page table.
+          ctl.updatePageTable(false, procNum, pageNum, victim);
 
           // Update the frame table.
-	  ctl.updateFrameTable(victim, procNum, pageNum);
-		
-          
+          ctl.updateFrameTable(victim, procNum, pageNum);
+
           // Add the reference frame to LRU Queue
-	  ctl.addCandidateFrame(victim);
+          ctl.addCandidateFrame(victim);
         }
 
         // Inspect the frame/page table as it currently stands.
@@ -206,7 +204,7 @@ public class Controller {
         System.out.println("Frame# ProcID  Page#");
         ctl.printFrameTableState();
         ctl.printPageTableState(procNum);
-	
+
       }
     } catch ( IOException e) {
       System.err.println("Could not find input file.");

@@ -62,13 +62,14 @@ public class ProcessTable {
   * @param pid is the PID of the process.
   *********************************************************/
   public void printPageTable( int pid ) {
-    System.out.println("Page Table for Process " + pid + "\n");
+    System.out.println("Page Table for Process " + pid);
     int i;
     for ( i = 0; i < max; i++ ) {
       if ( this.pcbTable[i].getPID() == pid ) {
         this.pcbTable[i].printTable();
       }
     }
+    System.out.println();
   }
 
   /*****************************************************

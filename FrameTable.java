@@ -20,7 +20,7 @@ public class FrameTable {
   private boolean [] freeFrameList;
 
   /** The Queue for deciding which frame to vacate for a new page reference. */
-  private PriorityQueue<Integer> kicker;
+  private Queue<Integer> kicker;
 
   /*************************************
   * Instantiates an array of 16 frames
@@ -28,7 +28,7 @@ public class FrameTable {
   public FrameTable () {
     this.frameTable = new Frame [max];
     this.freeFrameList = new boolean [max];
-    kicker = new PriorityQueue<Integer>(max);
+    kicker = new LinkedList<Integer>();
     int i;
 
     // Creates each new frame
@@ -112,7 +112,7 @@ public class FrameTable {
   /*****************************************************************
   * Searches for which frame is associated with a PID/page pair.
   * @param pid is the PID of the process owning the frame.
-  * @param page is the page located at the frame. 
+  * @param page is the page located at the frame.
   * @param frame is the frame that may need replacement.
   * @return the frame number associated with the PID/page pair.
   /****************************************************************/
@@ -133,7 +133,7 @@ public class FrameTable {
   }
 
   /*****************************************************
-  * Reports the PID/page pair associated with 
+  * Reports the PID/page pair associated with
   * a victim frame.
   * @param frame is the frame associated with the pair.
   * @return the PID and page of the victims.
@@ -141,7 +141,7 @@ public class FrameTable {
   public int [] searchVictims (int frame ) {
     int i;
     int [] pair = new int [2];
-    for ( i = 0; i < max ; i++ ) { 
+    for ( i = 0; i < max ; i++ ) {
       if ( i == frame ) {
         int pid = this.frameTable[i].getPID();
         int page = this.frameTable[i].getPage();
@@ -152,7 +152,7 @@ public class FrameTable {
     }
     return pair;
   }
-  
+
   /********************************************
   * Picks a candidate for page replacement.
   * Removes it from the head of the queue.
