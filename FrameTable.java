@@ -137,7 +137,7 @@ public class FrameTable {
   * @param frame is the frame associated with the pair.
   * @return the PID and page of the victims.
   *****************************************************/
-  public int [] searchVictims (int frame ) {
+  public int [] searchVictim (int frame ) {
     int i;
     int [] pair = new int [2];
     for ( i = 0; i < max ; i++ ) {

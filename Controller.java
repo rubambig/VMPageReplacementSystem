@@ -112,7 +112,7 @@ public class Controller {
   * @return the PID and page of the victims
   ********************************************/
   public int [] searchVictimPair (int frame ) {
-    return this.frameTable.searchVictims(frame);
+    return this.frameTable.searchVictim(frame);
   }
 
   /*****************************************************
@@ -163,7 +163,7 @@ public class Controller {
         // Check if there is a free frame.
         int freeFrame = ctl.checkFreeFrame();
 
-        if ( ctl.checkPageInTable(procNum, pageNum) ) {
+        if ( ctl.checkPageInTable(procNum, pageNum) ) { // Check in memory
 
           // Print message to the user and updated reference count.
           System.out.println("The page is already in physical memory!");
@@ -177,6 +177,7 @@ public class Controller {
 
         } else if ( freeFrame >= 0) { // Check for free frames
 
+          ctl.updateProcessFaultCount(procNum);
           ctl.updateProcessRefCount(procNum);
           ctl.updateFrameTable(freeFrame, procNum, pageNum);
           ctl.updatePageTable(false, procNum, pageNum, freeFrame);
