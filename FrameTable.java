@@ -104,32 +104,53 @@ public class FrameTable {
   /***************************************
   * Adds a frame to the replacement queue.
   ****************************************/
-  public boolean addCandidate(int frame) {
-    try {
-      return this.kicker.add(frame);
-    } catch ( IllegalStateException e) {
-      System.err.println("Cannot add anymore elements to queue!\n");
-      System.out.println("Error:" + e );
-      return false;
-    }
+  public void addCandidate(int frame) {
+    System.out.println("Adding frame: " + frame + " to queue \n");
+    this.kicker.add(frame);
   }
 
-  /************************************************************
-  * Searches for which frame is associated with a PID/page pair. 
+  /*****************************************************************
+  * Searches for which frame is associated with a PID/page pair.
   * @param pid is the PID of the process owning the frame.
   * @param page is the page located at the frame. 
+  * @param frame is the frame that may need replacement.
   * @return the frame number associated with the PID/page pair.
-  /************************************************************/
-  public int searchFrame(int pPid, int pPage) {
+  /****************************************************************/
+  public int [] searchPotentialReplacement(int pPid, int pPage) {
     int i;
+    int [] interestArray = new int [3];
     for ( i = 0; i < max; i++ ) {
       int pid = this.frameTable[i].getPID();
       int page = this.frameTable[i].getPage();
       if ( (pid == pPid) && (page == pPage) ) {
-        return i;
+        interestArray[0] = i;
+        interestArray[1] = pid;
+        interestArray[2] = page;
+        return interestArray;
       }
     }
-    return -1;
+    return interestArray;
+  }
+
+  /*****************************************************
+  * Reports the PID/page pair associated with 
+  * a victim frame.
+  * @param frame is the frame associated with the pair.
+  * @return the PID and page of the victims.
+  *****************************************************/
+  public int [] searchVictims (int frame ) {
+    int i;
+    int [] pair = new int [2];
+    for ( i = 0; i < max ; i++ ) { 
+      if ( i == frame ) {
+        int pid = this.frameTable[i].getPID();
+        int page = this.frameTable[i].getPage();
+        pair[0] = pid;
+        pair[1] = page;
+        return pair;
+      }
+    }
+    return pair;
   }
   
   /********************************************
@@ -138,7 +159,9 @@ public class FrameTable {
   * @return the frame that needs to be updated.
   *********************************************/
   public int pickLRUCandidate () {
-    return this.kicker.poll();
+    int vic = this.kicker.remove();
+    System.out.println("Picking victim frame: " + vic + "\n");
+    return vic;
   }
 
   /**

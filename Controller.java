@@ -70,11 +70,13 @@ public class Controller {
   }
 
   /************************************************************
-  * Searches for which frame is associated with a PID/page pair.  
-  * @return the frame number associated with the PID/page pair.
+  * Searches for which frame is associated with a PID/page pair.
+  * The function is used when the page is already in memory or 
+  * a potential replacement.   
+  * @return the triple of PID,page, and frame number;
   /************************************************************/
-  public int searchAssociatedFrame(int pid, int page) {
-    return this.frameTable.searchFrame(pid, page);
+  public int [] searchAssociatedFrame(int pid, int page) {
+    return this.frameTable.searchPotentialReplacement(pid, page);
   }
 
   /***************************************
@@ -82,6 +84,24 @@ public class Controller {
   ****************************************/
   public void addCandidateFrame(int frame) {
     this.frameTable.addCandidate(frame);
+  }
+
+  /********************************************
+  * Picks a victim for  LRU page replacement.
+  * @return the frame that needs to be updated.
+  *********************************************/
+  public int pickVictim () {
+    return this.frameTable.pickLRUCandidate();
+  }
+
+  /*******************************************
+  * Reports the PID/page pair associated with 
+  * a victim frame.
+  * @param frame is the frame associated with the pair
+  * @return the PID and page of the victims
+  ********************************************/
+  public int [] searchVictimPair (int frame ) {
+    return this.frameTable.searchVictims(frame);
   }
 
 
@@ -140,7 +160,7 @@ public class Controller {
           ctl.updateProcessRefCount(procNum);
           
           // Search which frame is associated with the process/page pair
-          int frameOfInterest = ctl.searchAssociatedFrame(procNum, pageNum);
+          int frameOfInterest = (ctl.searchAssociatedFrame(procNum, pageNum))[0];
           System.out.println("The frame you want is " + frameOfInterest + "\n");
           
           // Add the reference frame to LRU Queue
@@ -152,16 +172,41 @@ public class Controller {
           ctl.updateFrameTable(freeFrame, procNum, pageNum);
           ctl.updatePageTable(false, procNum, pageNum, freeFrame);
 
+          // Add the reference frame to LRU Queue
+	  ctl.addCandidateFrame(freeFrame);
+
         } else { // Find a victim and replace them
           ctl.updateProcessRefCount(procNum);
-          System.out.println("Page not in memory and No more free frames\n");
+          System.out.println("PAGE FAULT!!\n");
+	  
+          // Find the victim and 
+          int victim = ctl.pickVictim();
+          
+          // Send the victim a message to update their page table.
+          int [] replacementPair = ctl.searchVictimPair(victim);
+          int pid = replacementPair[0];
+          int page = replacementPair[1];
+          ctl.updatePageTable(true, pid, page, victim);
+          System.out.println("Old entry "+ pid + " " + page + victim+ "\n");
+
+	  // Send a message to the replacng process to update their page table.
+	  ctl.updatePageTable(false, procNum, pageNum, victim);
+          System.out.println("New entry:" + procNum + pageNum + victim + "\n");
+
+          // Update the frame table.
+	  ctl.updateFrameTable(victim, procNum, pageNum);
+		
+          
+          // Add the reference frame to LRU Queue
+	  ctl.addCandidateFrame(victim);
         }
 
         // Inspect the frame/page table as it currently stands.
+        System.out.println("Frame Table State \n");
         System.out.println("Frame# ProcID  Page#");
         ctl.printFrameTableState();
         ctl.printPageTableState(procNum);
-
+	
       }
     } catch ( IOException e) {
       System.err.println("Could not find input file.");
@@ -171,5 +216,8 @@ public class Controller {
 
     // Report final statistics
     ctl.printFinalStats();
+    // Inspect the frame/page table as it currently stands.
+    System.out.println("Frame# ProcID  Page#");
+    ctl.printFrameTableState();
   }
 }

@@ -39,7 +39,6 @@ public class ProcessTable {
     int i;
     for ( i = 0; i < 10; i++ ) {
       if ( this.pcbTable[i].getPID() == pid ) {
-        System.out.println("Got passed pair" + page + "\t" + frame + "\n");
         this.pcbTable[i].updateTable(inTable, page, frame);
       }
     }
