@@ -105,7 +105,6 @@ public class FrameTable {
   * Adds a frame to the replacement queue.
   ****************************************/
   public void addCandidate(int frame) {
-    System.out.println("Adding frame: " + frame + " to queue \n");
     this.kicker.add(frame);
   }
 

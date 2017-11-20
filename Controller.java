@@ -42,6 +42,14 @@ public class Controller {
   public void updateProcessRefCount ( int pid ) {
     this.processTable.updatePCBRefCount(pid);
   }
+
+  /***********************************************
+  * Updates the page fault count for a process.
+  * @param pid is the PID of the process.
+  ***********************************************/
+  public void updateProcessFaultCount ( int pid ) {
+    this.processTable.updatePCBFaultCount(pid);
+  }
   /******************************************************
   * Checks if the page is already in the table.
   * @param pid is the process that owns the page.
@@ -148,7 +156,7 @@ public class Controller {
 
       while ( (line = reader.readLine() ) != null) {
         int procNum = Integer.parseInt(line.substring(1,2));
-        System.out.println("Process : " + procNum + "\n");
+        System.out.println("Process : " + procNum);
         int pageNum = Integer.parseInt(line.substring(4,10),2);
         System.out.println("Page referenced: " + pageNum + "\n");
 
@@ -156,13 +164,13 @@ public class Controller {
         int freeFrame = ctl.checkFreeFrame();
 
         if ( ctl.checkPageInTable(procNum, pageNum) ) {
+
           // Print message to the user and updated reference count.
-          System.out.println("The page is already in physical memory!\n");
+          System.out.println("The page is already in physical memory!");
           ctl.updateProcessRefCount(procNum);
 
           // Search which frame is associated with the process/page pair
           int frameOfInterest = (ctl.searchAssociatedFrame(procNum, pageNum))[0];
-          // System.out.println("The frame you want is " + frameOfInterest + "\n");
 
           // Add the reference frame to LRU Queue
           ctl.addCandidateFrame(frameOfInterest);
@@ -177,8 +185,10 @@ public class Controller {
           ctl.addCandidateFrame(freeFrame);
 
         } else { // Find a victim and replace them
+
+          ctl.updateProcessFaultCount(procNum);
           ctl.updateProcessRefCount(procNum);
-          System.out.println("PAGE FAULT!!\n");
+          System.out.println("PAGE FAULT!!");
 
           // Find the victim and
           int victim = ctl.pickVictim();
@@ -200,7 +210,7 @@ public class Controller {
         }
 
         // Inspect the frame/page table as it currently stands.
-        System.out.println("Frame Table State \n");
+        System.out.println("Physical Memory \n");
         System.out.println("Frame# ProcID  Page#");
         ctl.printFrameTableState();
         ctl.printPageTableState(procNum);
@@ -214,8 +224,6 @@ public class Controller {
 
     // Report final statistics
     ctl.printFinalStats();
-    // Inspect the frame/page table as it currently stands.
-    System.out.println("Frame# ProcID  Page#");
-    ctl.printFrameTableState();
+
   }
 }

@@ -57,12 +57,25 @@ public class ProcessTable {
     }
   }
 
+  /***********************************************
+  * Updates the page fault count for the process.
+  * @param pid is the PID of the process.
+  ***********************************************/
+  public void updatePCBFaultCount ( int pid ) {
+    int i;
+    for ( i = 0; i < max; i++ ) {
+      if ( this.pcbTable[i].getPID() == pid ) {
+        this.pcbTable[i].updateFaults();
+      }
+    }
+  }
+
   /********************************************************
   * Prints the current state of the PCB's page table.
   * @param pid is the PID of the process.
   *********************************************************/
   public void printPageTable( int pid ) {
-    System.out.println("Page Table for Process " + pid);
+    System.out.println("Page Table : Process " + pid);
     int i;
     for ( i = 0; i < max; i++ ) {
       if ( this.pcbTable[i].getPID() == pid ) {
@@ -76,21 +89,23 @@ public class ProcessTable {
   * Prints the total memory references for each process.
   ******************************************************/
   public void printStats () {
+    System.out.println("-------------------------------------------------");
+    System.out.println("Final Stats\n");
+    System.out.println("Proc   Refs  Faults");
     int i = 0;
+
     for (i = 0; i < max; i++) {
       int pid = this.pcbTable[i].getPID();
-      //System.out.println("Got process #" + pid + "and i is " + i + "\n");
-      int total = this.pcbTable[i].getTotalReferences();
-      System.out.println("Process " + pid + ", Total Refs: " + total + "\n");
+      int totalRefs = this.pcbTable[i].getTotalReferences();
+      int totalFaults = this.pcbTable[i].getTotalPageFaults();
+      System.out.println(pid + "\t" + totalRefs + "\t" + totalFaults);
     }
   }
 
   /**
   * TO-DO
-  * - Update the page table of a process if a page fault occurs
   * - Send the current state of a PCB as requested by controller
-  * - Report the size of the page table for a process after each input run (pageTable.size)
-  * - Report the totla number of memory references made by each process
+  * - Report the number of page faults
   */
 
 }

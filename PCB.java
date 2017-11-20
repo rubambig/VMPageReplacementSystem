@@ -10,8 +10,11 @@ public class PCB {
   /** The PID for this process. */
   private int pid;
 
-  /** The number of memory references for this process. */
-  private int memref;
+  /** The total number of memory references for this process. */
+  private int memRef;
+
+  /** The total number of page faults for this process. */
+  private int pageFaults;
 
   /** The page table for this process. */
   private Hashtable<Integer, Integer> pageTable;
@@ -28,7 +31,8 @@ public class PCB {
   ***********************************************/
   public PCB (int PID) {
     this.pid = PID;
-    this.memref = 0;
+    this.memRef = 0;
+    this.pageFaults = 0;
     this.pageTable = new Hashtable<Integer, Integer>(capacity);
   }
 
@@ -47,10 +51,17 @@ public class PCB {
   }
 
   /***********************************************
-  * Updates the references count for the process.
+  * Updates the reference count for the process.
   ***********************************************/
   public void updateRefCount () {
-    this.memref++;
+    this.memRef++;
+  }
+
+  /***********************************************
+  * Updates the page fault count for the process.
+  ***********************************************/
+  public void updateFaults () {
+    this.pageFaults++;
   }
 
   /*********************************************
@@ -70,8 +81,15 @@ public class PCB {
    * Reports the total number of references for this process.
    **********************************************************/
    public int getTotalReferences () {
-     return this.memref;
+     return this.memRef;
    }
+
+   /**********************************************************
+    * Reports the total number of page faults for this process.
+    **********************************************************/
+    public int getTotalPageFaults () {
+      return this.pageFaults;
+    }
 
   /************************************************
    * Reports the size of the PCB's page table
