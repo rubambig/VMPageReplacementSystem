@@ -23,7 +23,7 @@ public class Main {
 
   public static void main (String[] args) {
 
-    Controller ctl = new Controller();
+    Tables ctl = new Tables();
     SystemGUI gui = new SystemGUI(args[0]);
     String filename = args[0];
     try  {
