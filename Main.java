@@ -77,13 +77,14 @@ public class Main {
           int pid = replacementPair[0];
           int page = replacementPair[1];
           ctl.updatePageTable(true, pid, page, victim);
-          ctrl.updatePageTable(procNum);
+          
 
           // Send a message to the replacng process to update their page table.
           ctl.updatePageTable(false, procNum, pageNum, victim);
 
           // Update the frame table.
           ctl.updateFrameTable(victim, procNum, pageNum);
+          ctrl.updatePageTable(procNum);
 
           // Add the reference frame to LRU Queue
           ctl.addCandidateFrame(victim);

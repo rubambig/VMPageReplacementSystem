@@ -60,7 +60,7 @@ public class SystemGUI extends JFrame {
         
         setTitle("VM Replacement System, input file: " + filename);
         
-        setSize(400, 800);
+        setSize(600, 900);
         
         setLayout(new GridLayout(dim,dim));
         

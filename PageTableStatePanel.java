@@ -19,8 +19,11 @@ public class PageTableStatePanel extends JPanel {
   /** The array  of page/frame pairs. */
   private JLabel [] pairs;
 
-  /** The label for the page table **/
+  /** The label for the page table. **/
   private static JLabel pidLabel;
+
+  /** The max size of a page table. **/
+  private final static int max  = 64;
 
   /***************************************
   * Instantiates the page table state panel.
@@ -30,14 +33,21 @@ public class PageTableStatePanel extends JPanel {
     super();
 
     // Create the main components
+    int i;
     pageTableStatePanel = new JPanel();
-    pidLabel = new JLabel("Process table for process: ", SwingConstants.CENTER);
-
-    // Define the layout i.e. everything will be dropped into a box.
-    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    pidLabel = new JLabel("Process Table: P ", SwingConstants.CENTER);
+    pairs = new JLabel[max];
 
     // Add the components
     add(pidLabel);
+    for ( i = 0 ; i < max ; i++ ) { 
+      pairs[i] = new JLabel("", SwingConstants.CENTER);
+      add(pairs[i]);
+    }
+    
+
+    // Define the layout i.e. everything will be dropped into a box.
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     setVisible(true);
   }
@@ -50,20 +60,34 @@ public class PageTableStatePanel extends JPanel {
   public void redrawTable ( Hashtable<Integer,Integer> table, int pid ) { 
     
     // Relabel the page table
-    pidLabel.setText("Process table for process: " + pid);
+    pidLabel.setText("Process Table: P" + pid + "\n");
+
+    // Reset the text
+    resetText();
 
     // Build the table based on size
-    int counter = 0, size = table.size();
-    pairs = new JLabel[size];
+    int counter = 0;
     for ( Integer key : table.keySet() ) {
-      String onePair = "Page: " + key + " -> " + "Frame: " + table.get(key) + "PID: " + pid;
-      pairs[counter] = new JLabel(onePair, SwingConstants.CENTER);
-      add(pairs[counter]);
+      String onePair = "Page " + key + " -----> " + "Frame " + table.get(key);
+      pairs[counter].setText(onePair);
       counter++;
     }
     
-    revalidate();
-    repaint();
+    pageTableStatePanel.revalidate();
+    pageTableStatePanel.repaint();
+  }
+
+  /****************************************************
+  * Resets the text in all the labels of the table. 
+  * This ensures any changes made by a page table that 
+  * was bigger than the current one are not kept on the 
+  * panel. 
+  ****************************************************/
+  private void resetText () { 
+    int i;
+    for ( i = 0; i < max; i++ ) {
+      pairs[i].setText("");
+    }
   }
 
   /**
