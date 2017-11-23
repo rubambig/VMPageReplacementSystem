@@ -50,9 +50,23 @@ public class Controller implements ActionListener {
     runc.addActionListener(this);
   }
 
-
+  /**********************************************
+  * Instructs the GUI to display the latest page
+  * table for a given process.
+  * @param pid is the PID of the process.
+  **********************************************/
   public void updatePageTable (int pid) {
    gui.displayTable(table.passTable(pid), pid);
+  }
+
+  /*********************************************
+  * Instructs the GUI to display the latest page
+  * reference for a given process. 
+  * @param pid is the PID of the process. 
+  * @param ref is the page that was referenced. 
+  **********************************************/
+  public void updateReference (int pid, String ref) { 
+    gui.displayReference(pid, ref);
   }
 
   

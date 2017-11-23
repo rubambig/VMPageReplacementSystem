@@ -73,8 +73,8 @@ public class PageTableStatePanel extends JPanel {
       counter++;
     }
     
-    pageTableStatePanel.revalidate();
-    pageTableStatePanel.repaint();
+    //pageTableStatePanel.revalidate();
+    //pageTableStatePanel.repaint();
   }
 
   /****************************************************

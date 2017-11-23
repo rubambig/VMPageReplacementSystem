@@ -2,7 +2,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.BoxLayout;
+import java.awt.GridLayout;
 /*************************************************
 * The panel for the user commands.
 * Communicates with the GUI to set ActionListeners
@@ -18,8 +18,14 @@ public class CommandsPanel extends JPanel {
   /** The buttons for handling user actions. */
   private JButton next, runf, runc;
 
+  /** The label for the memory reference. */
+  private JLabel ref;
+
   /** The size of the buttons. */
-  private final int bSize  = 100;
+  private final int bSize  = 50;
+
+  /** The dimensions for the grid. */
+  private final int col = 1, row = 4;
 
   /*******************************************************
   * Instantiates the buttons to be used for user actions.
@@ -32,16 +38,19 @@ public class CommandsPanel extends JPanel {
  
     next = new JButton("Next Input");
 
-    runf = new JButton("Run to Fault");
+    runf = new JButton("Run to Next Page Fault");
 
     runc = new JButton("Run to Completion");
 
+    ref = new JLabel("Mem References will appear here");
+
     setBtnSize();
 
-    // Define the layout i.e. everything will be dropped into a box.
-    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    // Define the layout to be a grid. 
+    setLayout(new GridLayout(row,col));
 
     // Add the components.
+    add(ref);
     add(next);
     add(runf);
     add(runc);
@@ -70,5 +79,15 @@ public class CommandsPanel extends JPanel {
    next.setSize(bSize, bSize);
    runf.setSize(bSize, bSize);
    runc.setSize(bSize, bSize);
+  }
+
+  /**************************************************
+  * Resets the label for the memory reference
+  * based on the input.
+  * @param pid is the process that made a reference. 
+  * @param page is the page that was referenced.
+  **************************************************/
+  public void setReference ( int pid, String page ) { 
+    ref.setText("P" + pid + " referenced page " + page);
   }
 }

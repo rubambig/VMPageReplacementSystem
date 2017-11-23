@@ -104,5 +104,14 @@ public class SystemGUI extends JFrame {
    public void displayTable( Hashtable<Integer, Integer> pTable, int pid) { 
      pageTable.redrawTable(pTable, pid);
    }
+
+   /**************************************************
+   * Passes the memory reference to the commands panel.
+   * @param pid is the process that made a reference. 
+   * @param ref is the page that was referenced.
+   **************************************************/
+   public void displayReference ( int pid, String ref ) { 
+    commands.setReference(pid, ref);
+   }
     
 }

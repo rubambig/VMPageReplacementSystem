@@ -23,9 +23,9 @@ public class Main {
 
   public static void main (String[] args) {
 
-    Tables ctl = new Tables();
+    Tables tbl = new Tables();
     SystemGUI gui = new SystemGUI(args[0]);
-    Controller ctrl = new Controller(gui, ctl);
+    Controller ctrl = new Controller(gui, tbl);
     String filename = args[0];
     try  {
       BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -34,67 +34,73 @@ public class Main {
       while ( (line = reader.readLine() ) != null) {
         int procNum = Integer.parseInt(line.substring(1,2));
         System.out.println("Process : " + procNum);
+        String pageRef = line.substring(4,10);
         int pageNum = Integer.parseInt(line.substring(4,10),2);
         System.out.println("Page referenced: " + pageNum + "\n");
 
         // Check if there is a free frame.
-        int freeFrame = ctl.checkFreeFrame();
+        int freeFrame = tbl.checkFreeFrame();
 
-        if ( ctl.checkPageInTable(procNum, pageNum) ) { // Check in memory
+        if ( tbl.checkPageInTable(procNum, pageNum) ) { // Check in memory
+	  ctrl.updateReference(procNum, pageRef);
 
           // Print message to the user and updated reference count.
           System.out.println("The page is already in physical memory!");
-          ctl.updateProcessRefCount(procNum);
+          tbl.updateProcessRefCount(procNum);
 
           // Search which frame is associated with the process/page pair.
-          int frameOfInterest = (ctl.searchAssociatedFrame(procNum, pageNum))[0];
+          int frameOfInterest = (tbl.searchAssociatedFrame(procNum, pageNum))[0];
 
           // Add the reference frame to LRU Queue.
-          ctl.addCandidateFrame(frameOfInterest);
+          tbl.addCandidateFrame(frameOfInterest);
 
         } else if ( freeFrame >= 0) { // Check for free frames.
+	  ctrl.updateReference(procNum, pageRef);
 
-          ctl.updateProcessFaultCount(procNum);
-          ctl.updateProcessRefCount(procNum);
-          ctl.updateFrameTable(freeFrame, procNum, pageNum);
-          ctl.updatePageTable(false, procNum, pageNum, freeFrame);
+          tbl.updateProcessFaultCount(procNum);
+          tbl.updateProcessRefCount(procNum);
+          tbl.updateFrameTable(freeFrame, procNum, pageNum);
+          tbl.updatePageTable(false, procNum, pageNum, freeFrame);
+
+	  // Controller actions.
           ctrl.updatePageTable(procNum);
 
           // Add the reference frame to LRU Queue.
-          ctl.addCandidateFrame(freeFrame);
+          tbl.addCandidateFrame(freeFrame);
 
         } else { // Find a victim and replace them.
+	  ctrl.updateReference(procNum, pageRef);
 
-          ctl.updateProcessFaultCount(procNum);
-          ctl.updateProcessRefCount(procNum);
+          tbl.updateProcessFaultCount(procNum);
+          tbl.updateProcessRefCount(procNum);
           System.out.println("PAGE FAULT!!");
 
           // Find the victim
-          int victim = ctl.pickVictim();
+          int victim = tbl.pickVictim();
 
           // Send the victim a message to update their page table.
-          int [] replacementPair = ctl.searchVictimPair(victim);
+          int [] replacementPair = tbl.searchVictimPair(victim);
           int pid = replacementPair[0];
           int page = replacementPair[1];
-          ctl.updatePageTable(true, pid, page, victim);
+          tbl.updatePageTable(true, pid, page, victim);
           
 
           // Send a message to the replacng process to update their page table.
-          ctl.updatePageTable(false, procNum, pageNum, victim);
+          tbl.updatePageTable(false, procNum, pageNum, victim);
 
           // Update the frame table.
-          ctl.updateFrameTable(victim, procNum, pageNum);
+          tbl.updateFrameTable(victim, procNum, pageNum);
           ctrl.updatePageTable(procNum);
 
           // Add the reference frame to LRU Queue
-          ctl.addCandidateFrame(victim);
+          tbl.addCandidateFrame(victim);
         }
 
         // Inspect the frame/page table as it currently stands.
         System.out.println("Physical Memory \n");
         System.out.println("Frame# ProcID  Page#");
-        ctl.printFrameTableState();
-        ctl.printPageTableState(procNum);
+        tbl.printFrameTableState();
+        tbl.printPageTableState(procNum);
 
       }
     } catch ( IOException e) {
@@ -104,6 +110,6 @@ public class Main {
     }
 
     // Report final statistics
-    ctl.printFinalStats();
+    tbl.printFinalStats();
   }
 }
