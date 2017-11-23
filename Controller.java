@@ -11,10 +11,60 @@ import java.util.*;
 * @since 11/22/2017
 **************************************************************/
 public class Controller implements ActionListener {
+  
+  /** The GUI to be displayed. */
+  private SystemGUI gui;
+  
+  /** The table object that holds the frame and page table. */
+  private Tables table;
 
+  /** The buttons for handling user actions. */
+  private JButton next, runf, runc;
+
+  /** The array of action buttons. */
+  private JButton [] userActionBtns;
+
+  /** The size of the buttons. */
+  private final int bSize  = 30;
+
+  /*************************************************
+  * Instantiates the tables, GUI, and buttons to be 
+  * used for user actions.
+  *************************************************/
+  public Controller (SystemGUI pGUI, Tables pTable ) {
+
+    gui = pGUI;
+    table = pTable;
+    userActionBtns = gui.sendButtons();
+    next = userActionBtns[0];
+    runf = userActionBtns[1];
+    runc = userActionBtns[2];
+  }
+
+  /*******************************************
+  * Adds the action listeners for the buttons.
+  ********************************************/
+  private void addCommandListeners() {
+    next.addActionListener(this);
+    runf.addActionListener(this);
+    runc.addActionListener(this);
+  }
+
+
+  public void updatePageTable (int pid) {
+   gui.displayTable(table.passTable(pid), pid);
+  }
+
+  
   @Override
   public void actionPerformed(ActionEvent e) {
+    if ( e.getSource() instanceof JButton && e.getSource() == next ) { 
+    
+    } else if ( e.getSource() instanceof JButton && e.getSource() == runf) { 
 
+    } else if ( e.getSource() instanceof JButton && e.getSource() == runc ) { 
+
+    }
   }
 }
 

@@ -107,4 +107,12 @@ public class PCB {
      return this.pid;
    }
 
+   /****************************************
+   * Points the pcb table to its page table. 
+   * @return the page table for the process.
+   *****************************************/
+   public Hashtable <Integer, Integer> getTable () {
+     return this.pageTable;
+   }
+
 }

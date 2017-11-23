@@ -42,10 +42,10 @@ public class PhysicalStatePanel extends JPanel {
     pageState = new JLabel("Physical Memory State", SwingConstants.CENTER);
 
     // Make it pretty
-    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     // Add the components
-    add(physicalStatePanel);
+    add(pageState);
     pairs = new JLabel[rowMax];
     int i;
     for ( i = 0; i < rowMax; i++ ) {

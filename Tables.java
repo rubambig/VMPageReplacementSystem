@@ -23,6 +23,21 @@ public class Tables {
     this.frameTable = new FrameTable();
   }
 
+  /********************************************************
+  * Passes a reference to the page table to the controller.
+  * @param pPid is the PID of the process.
+  *********************************************************/
+  public Hashtable<Integer, Integer> passTable (int pPid) { 
+    int i, pid;
+    for ( i = 0; i < 10; i++ ) {
+     pid = this.processTable.getPCBArray()[i].getPID();
+     if ( pid == pPid ) {
+       return this.processTable.getPCBArray()[i].getTable();
+     }
+    }
+    return null;
+  }
+
   /***********************************************
   * Updates the references count for the process.
   * @param pid is the PID of the process.

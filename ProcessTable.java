@@ -102,10 +102,17 @@ public class ProcessTable {
     }
   }
 
+  /*******************************************
+  * Reports a reference to the array of PCBs.
+  * @return an array of PCBs.
+  ********************************************/
+  public PCB [] getPCBArray () {
+    return this.pcbTable;
+  }
+
   /**
   * TO-DO
   * - Send the current state of a PCB as requested by controller
-  * - Report the number of page faults
   */
 
 }

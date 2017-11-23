@@ -25,6 +25,7 @@ public class Main {
 
     Tables ctl = new Tables();
     SystemGUI gui = new SystemGUI(args[0]);
+    Controller ctrl = new Controller(gui, ctl);
     String filename = args[0];
     try  {
       BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -57,6 +58,7 @@ public class Main {
           ctl.updateProcessRefCount(procNum);
           ctl.updateFrameTable(freeFrame, procNum, pageNum);
           ctl.updatePageTable(false, procNum, pageNum, freeFrame);
+          ctrl.updatePageTable(procNum);
 
           // Add the reference frame to LRU Queue.
           ctl.addCandidateFrame(freeFrame);
@@ -75,6 +77,7 @@ public class Main {
           int pid = replacementPair[0];
           int page = replacementPair[1];
           ctl.updatePageTable(true, pid, page, victim);
+          ctrl.updatePageTable(procNum);
 
           // Send a message to the replacng process to update their page table.
           ctl.updatePageTable(false, procNum, pageNum, victim);

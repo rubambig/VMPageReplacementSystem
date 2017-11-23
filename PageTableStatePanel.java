@@ -17,7 +17,7 @@ public class PageTableStatePanel extends JPanel {
   private JPanel pageTableStatePanel;
 
   /** The array  of page/frame pairs. */
-  private static JLabel [] pairs;
+  private JLabel [] pairs;
 
   /** The label for the page table **/
   private static JLabel pidLabel;
@@ -32,11 +32,12 @@ public class PageTableStatePanel extends JPanel {
     // Create the main components
     pageTableStatePanel = new JPanel();
     pidLabel = new JLabel("Process table for process: ", SwingConstants.CENTER);
-    add(pidLabel);
-
 
     // Define the layout i.e. everything will be dropped into a box.
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+    // Add the components
+    add(pidLabel);
 
     setVisible(true);
   }
@@ -55,11 +56,12 @@ public class PageTableStatePanel extends JPanel {
     int counter = 0, size = table.size();
     pairs = new JLabel[size];
     for ( Integer key : table.keySet() ) {
-      String onePair = "Page: " + key + " -> " + "Frame: " + table.get(key);
+      String onePair = "Page: " + key + " -> " + "Frame: " + table.get(key) + "PID: " + pid;
       pairs[counter] = new JLabel(onePair, SwingConstants.CENTER);
+      add(pairs[counter]);
       counter++;
     }
-   
+    
     revalidate();
     repaint();
   }
