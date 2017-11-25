@@ -7,7 +7,7 @@ import javax.swing.BoxLayout;
 * The panel for the page table of a process.
 * Displays the current state of the page table.
 * Dynamically repaints itself based on the size
-* of the process' page table. 
+* of the process' page table.
 * @author Gloire Rubambiza
 * @since 11/22/2017
 **************************************************/
@@ -40,25 +40,25 @@ public class PageTableStatePanel extends JPanel {
 
     // Add the components
     add(pidLabel);
-    for ( i = 0 ; i < max ; i++ ) { 
+    for ( i = 0 ; i < max ; i++ ) {
       pairs[i] = new JLabel("", SwingConstants.CENTER);
       add(pairs[i]);
     }
-    
+
 
     // Define the layout i.e. everything will be dropped into a box.
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     setVisible(true);
   }
- 
+
   /****************************************************
   * Builds a page table based on the size of the table.
   * @param table is the page table for the process.
-  * @param pid is the PID of the process. 
+  * @param pid is the PID of the process.
   ****************************************************/
-  public void redrawTable ( Hashtable<Integer,Integer> table, int pid ) { 
-    
+  public void redrawTable ( Hashtable<Integer,Integer> table, int pid ) {
+
     // Relabel the page table
     pidLabel.setText("Process Table: P" + pid + "\n");
 
@@ -72,18 +72,18 @@ public class PageTableStatePanel extends JPanel {
       pairs[counter].setText(onePair);
       counter++;
     }
-    
+
     //pageTableStatePanel.revalidate();
     //pageTableStatePanel.repaint();
   }
 
   /****************************************************
-  * Resets the text in all the labels of the table. 
-  * This ensures any changes made by a page table that 
-  * was bigger than the current one are not kept on the 
-  * panel. 
+  * Resets the text in all the labels of the table.
+  * This ensures any changes made by a page table that
+  * was bigger than the current one are not kept on the
+  * panel.
   ****************************************************/
-  private void resetText () { 
+  private void resetText () {
     int i;
     for ( i = 0; i < max; i++ ) {
       pairs[i].setText("");

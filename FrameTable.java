@@ -163,13 +163,16 @@ public class FrameTable {
     return vic;
   }
 
-  /**
-  * TO-DO
-  * - Keep track of which frame/page pair was least recently used
-  * - Use LRU replacement and reupdate the page table of a process kicked out
-  * - Check if any frames are free before bringing a new page in
-  * - Update the free frame list after bringing a new page in
-  * - Update the frame table(new PID, new page) when a new page is brought in
-  */
-
+  /*********************************************
+  * Returns a reference to the frame table for
+  * the GUI to display.
+  * The reference is passed to the Tables class
+  * which sends it to the controller, which in
+  * turn passes it to the GUI.
+  * This ensures the view never calls the model.
+  * @return an array of frames.
+  **********************************************/
+  public Frame [] getFrameTable () {
+    return this.frameTable;
+  }
 }

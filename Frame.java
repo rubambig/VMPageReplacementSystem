@@ -6,9 +6,6 @@ import java.util.*;
 **************************/
 public class Frame {
 
-  /** The frame number for this frame. */
-  //private int frameNumber;
-
   /** The PID of the process associated with the frame. */
   private int processPID;
 

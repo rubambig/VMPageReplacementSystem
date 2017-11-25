@@ -1,20 +1,20 @@
 import java.util.*;
 /*********************************************************
-* The Table Manager. 
+* The Table Manager.
 * Maintains one process/frame table to handle page faults.
 * @author Gloire Rubambiza
 * @since 11/14/2017
 **********************************************************/
 public class Tables {
 
-  /* The process table for this controller i.e.  this run of m references */
+  /* The process table. */
   private ProcessTable processTable;
 
-  /* The frame table for this controller */
+  /* The frame table. */
   private FrameTable frameTable;
 
   /*******************************************************
-  * Instantiates a controller for frame and process table.
+  * Instantiates a unified table for frame/process tables.
   * To be used as a unified data structure that initiates
   * all the actions based on input passed from main.
   ********************************************************/
@@ -23,19 +23,31 @@ public class Tables {
     this.frameTable = new FrameTable();
   }
 
-  /********************************************************
+  /***********************************************************
   * Passes a reference to the page table to the controller.
+  * To be passed to the GUI for display a process' page table.
   * @param pPid is the PID of the process.
-  *********************************************************/
-  public Hashtable<Integer, Integer> passTable (int pPid) { 
+  ************************************************************/
+  public Hashtable<Integer, Integer> passProcessTable (int pPid) {
     int i, pid;
     for ( i = 0; i < 10; i++ ) {
-     pid = this.processTable.getPCBArray()[i].getPID();
-     if ( pid == pPid ) {
-       return this.processTable.getPCBArray()[i].getTable();
-     }
+      pid = this.processTable.getPCBArray()[i].getPID();
+      if ( pid == pPid ) {
+        return this.processTable.getPCBArray()[i].getTable();
+      }
     }
     return null;
+  }
+
+  /**************************************************
+  * Gets a reference to the frame table i.e. current
+  * physical state of memory.
+  * Sends the table to the controller, which in
+  * turn passes it to the GUI.
+  * @return an array of frames.
+  *************************************************/
+  public Frame [] passFrameTable () {
+    return this.frameTable.getFrameTable();
   }
 
   /***********************************************
@@ -109,12 +121,11 @@ public class Tables {
     return this.frameTable.pickLRUCandidate();
   }
 
-  /*******************************************
-  * Reports the PID/page pair associated with
-  * a victim frame.
-  * @param frame is the frame associated with the pair
-  * @return the PID and page of the victims
-  ********************************************/
+  /**********************************************************
+  * Reports the PID/page pair associated with a victim frame.
+  * @param frame is the frame associated with the pair.
+  * @return the PID and page of the victim.
+  ***********************************************************/
   public int [] searchVictimPair (int frame ) {
     return this.frameTable.searchVictim(frame);
   }
@@ -148,6 +159,16 @@ public class Tables {
   ******************************************************/
   public void printFinalStats () {
     this.processTable.printStats();
+  }
+
+  /*************************************************
+  * Passes the array of PCBs to the controller.
+  * The array is then passed to the GUI for printing
+  * final statistics.
+  * @return an array of PCBs
+  **************************************************/
+  public PCB [] passPCBArray () {
+    return this.processTable.getPCBArray();
   }
 
 }

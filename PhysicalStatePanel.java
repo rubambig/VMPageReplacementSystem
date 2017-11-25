@@ -49,34 +49,32 @@ public class PhysicalStatePanel extends JPanel {
     pairs = new JLabel[rowMax];
     int i;
     for ( i = 0; i < rowMax; i++ ) {
-      pairs[i] = new JLabel("XXXXX", SwingConstants.CENTER);
+      pairs[i] = new JLabel("", SwingConstants.CENTER);
       add(pairs[i]);
     }
 
     setVisible(true);
   }
-  
+
   /**
   * TO-DO
   * - Repaint the frame table when new changes occur
   * - Take the frame table w/o calling the frametable class directly
   /***********************************************
   * Repaints the frame table as new changes occur.
-  * @param table is the frame table. 
+  * @param table is the frame table.
   ************************************************/
-  public void redrawTable ( Frame[] table ) { 
-    
+  public void redrawTable ( Frame[] table ) {
 
     // Repaint the frame table
     int i;
-    String display = "";
     for ( i = 0; i < rowMax; i++ ) {
       int pid = table[i].getPID();
       int page = table[i].getPage();
-      display = "Frame " + i + "\tP " + pid + "\tPage " + page;
+      String display = "Frame " + i + " P" + pid + "  Page " + page;
       pairs[i].setText(display);
     }
-   
+
     revalidate();
     repaint();
   }

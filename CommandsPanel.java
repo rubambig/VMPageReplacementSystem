@@ -6,7 +6,7 @@ import java.awt.GridLayout;
 /*************************************************
 * The panel for the user commands.
 * Communicates with the GUI to set ActionListeners
-* in the controller. 
+* in the controller.
 * @author Gloire Rubambiza
 * @since 11/22/2017
 **************************************************/
@@ -32,10 +32,10 @@ public class CommandsPanel extends JPanel {
   *******************************************************/
   public CommandsPanel () {
 
-    super(); 
+    super();
 
     command = new JPanel();
- 
+
     next = new JButton("Next Input");
 
     runf = new JButton("Run to Next Page Fault");
@@ -46,7 +46,7 @@ public class CommandsPanel extends JPanel {
 
     setBtnSize();
 
-    // Define the layout to be a grid. 
+    // Define the layout to be a grid.
     setLayout(new GridLayout(row,col));
 
     // Add the components.
@@ -56,13 +56,13 @@ public class CommandsPanel extends JPanel {
     add(runc);
 
     setVisible(true);
-    
+
   }
-  
+
   /*******************************************
-  * Sends the action buttons to the GUI to be 
+  * Sends the action buttons to the GUI to be
   * passed to the controller.
-  * @return an array of the action buttons. 
+  * @return an array of the action buttons.
   ********************************************/
   public JButton [] sendButtons () {
     JButton [] actionButtons = new JButton[3];
@@ -76,18 +76,18 @@ public class CommandsPanel extends JPanel {
   * Sets the size for the buttons.
   ********************************/
   private void setBtnSize () {
-   next.setSize(bSize, bSize);
-   runf.setSize(bSize, bSize);
-   runc.setSize(bSize, bSize);
+    next.setSize(bSize, bSize);
+    runf.setSize(bSize, bSize);
+    runc.setSize(bSize, bSize);
   }
 
   /**************************************************
   * Resets the label for the memory reference
   * based on the input.
-  * @param pid is the process that made a reference. 
+  * @param pid is the process that made a reference.
   * @param page is the page that was referenced.
   **************************************************/
-  public void setReference ( int pid, String page ) { 
+  public void setReference ( int pid, String page ) {
     ref.setText("P" + pid + " referenced page " + page);
   }
 }

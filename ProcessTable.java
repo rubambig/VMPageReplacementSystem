@@ -85,9 +85,9 @@ public class ProcessTable {
     System.out.println();
   }
 
-  /*****************************************************
-  * Prints the total memory references for each process.
-  ******************************************************/
+  /******************************************
+  * Prints the final stats for each process.
+  *******************************************/
   public void printStats () {
     System.out.println("-------------------------------------------------");
     System.out.println("Final Stats\n");
@@ -103,7 +103,7 @@ public class ProcessTable {
   }
 
   /*******************************************
-  * Reports a reference to the array of PCBs.
+  * Returns a reference to the array of PCBs.
   * @return an array of PCBs.
   ********************************************/
   public PCB [] getPCBArray () {

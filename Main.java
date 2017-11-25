@@ -12,8 +12,8 @@ import java.io.FileReader;
 * Listens for actions on the user GUI.
 * Sends messages to the process table and frame table with
 * any new updates dictacted by the file input.
-* Handles the controller communicating with process and 
-* frame tables. 
+* Handles the controller communicating with process and
+* frame tables.
 * Sends any updates the viewer about the state of the
 * process currently making memory references.
 * @author Gloire Rubambiza
@@ -42,7 +42,7 @@ public class Main {
         int freeFrame = tbl.checkFreeFrame();
 
         if ( tbl.checkPageInTable(procNum, pageNum) ) { // Check in memory
-	  ctrl.updateReference(procNum, pageRef);
+          ctrl.updateReference(procNum, pageRef);
 
           // Print message to the user and updated reference count.
           System.out.println("The page is already in physical memory!");
@@ -55,21 +55,22 @@ public class Main {
           tbl.addCandidateFrame(frameOfInterest);
 
         } else if ( freeFrame >= 0) { // Check for free frames.
-	  ctrl.updateReference(procNum, pageRef);
+          ctrl.updateReference(procNum, pageRef);
 
           tbl.updateProcessFaultCount(procNum);
           tbl.updateProcessRefCount(procNum);
           tbl.updateFrameTable(freeFrame, procNum, pageNum);
           tbl.updatePageTable(false, procNum, pageNum, freeFrame);
 
-	  // Controller actions.
+          // Controller actions.
           ctrl.updatePageTable(procNum);
+          ctrl.updateFrameTable();
 
           // Add the reference frame to LRU Queue.
           tbl.addCandidateFrame(freeFrame);
 
         } else { // Find a victim and replace them.
-	  ctrl.updateReference(procNum, pageRef);
+          ctrl.updateReference(procNum, pageRef);
 
           tbl.updateProcessFaultCount(procNum);
           tbl.updateProcessRefCount(procNum);
@@ -83,14 +84,16 @@ public class Main {
           int pid = replacementPair[0];
           int page = replacementPair[1];
           tbl.updatePageTable(true, pid, page, victim);
-          
 
-          // Send a message to the replacng process to update their page table.
+
+          // Send a message to the replacing process to update their page table.
           tbl.updatePageTable(false, procNum, pageNum, victim);
 
           // Update the frame table.
           tbl.updateFrameTable(victim, procNum, pageNum);
+
           ctrl.updatePageTable(procNum);
+          ctrl.updateFrameTable();
 
           // Add the reference frame to LRU Queue
           tbl.addCandidateFrame(victim);
@@ -100,6 +103,7 @@ public class Main {
         System.out.println("Physical Memory \n");
         System.out.println("Frame# ProcID  Page#");
         tbl.printFrameTableState();
+        ctrl.updateFrameTable();
         tbl.printPageTableState(procNum);
 
       }
@@ -110,6 +114,7 @@ public class Main {
     }
 
     // Report final statistics
+    ctrl.updateStats();
     tbl.printFinalStats();
   }
 }

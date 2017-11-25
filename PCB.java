@@ -1,7 +1,6 @@
 import java.util.*;
-import java.util.ArrayList;
 /************************************************************
-* A Process Control Block (PCB) data structure for a process
+* A Process Control Block (PCB) data structure for a process.
 * @author Gloire Rubambiza
 * @since 11/12/2017
 ************************************************************/
@@ -78,41 +77,41 @@ public class PCB {
   }
 
   /**********************************************************
-   * Reports the total number of references for this process.
-   **********************************************************/
-   public int getTotalReferences () {
-     return this.memRef;
-   }
+  * Reports the total number of references for this process.
+  **********************************************************/
+  public int getTotalReferences () {
+    return this.memRef;
+  }
 
-   /**********************************************************
-    * Reports the total number of page faults for this process.
-    **********************************************************/
-    public int getTotalPageFaults () {
-      return this.pageFaults;
-    }
+  /**********************************************************
+  * Reports the total number of page faults for this process.
+  **********************************************************/
+  public int getTotalPageFaults () {
+    return this.pageFaults;
+  }
 
   /************************************************
-   * Reports the size of the PCB's page table
-   * at the completion of each memory reference run.
-   * @return the size of the page table currently.
+  * Reports the size of the PCB's page table
+  * at the completion of each memory reference run.
+  * @return the size of the page table currently.
   ************************************************/
   public int getPageSize () {
     return this.pageTable.size();
   }
 
   /***********************************
-   * Reports the PID for the process.
-   **********************************/
-   public int getPID () {
-     return this.pid;
-   }
+  * Reports the PID for the process.
+  **********************************/
+  public int getPID () {
+    return this.pid;
+  }
 
-   /****************************************
-   * Points the pcb table to its page table. 
-   * @return the page table for the process.
-   *****************************************/
-   public Hashtable <Integer, Integer> getTable () {
-     return this.pageTable;
-   }
+  /****************************************
+  * Points the pcb table to its page table.
+  * @return the page table for the process.
+  *****************************************/
+  public Hashtable <Integer, Integer> getTable () {
+    return this.pageTable;
+  }
 
 }
