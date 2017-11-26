@@ -2,6 +2,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
+import java.awt.Font;
 /*********************************************
 * The panel for the final statistics after an
 * input run.
@@ -10,6 +11,17 @@ import javax.swing.BoxLayout;
 * @since 11/22/2017
 *********************************************/
 public class FinalStatsPanel extends JPanel {
+
+  /** Objects of the class are now serializable. */
+	private static final long serialVersionUID = 1L;
+
+  /** The font for most text in the GUI. */
+	private static final Font NORMAL_FONT =
+			new Font("Cooper Black", Font.PLAIN, 20);
+
+  /** The GV blue color. */
+  private static final java.awt.Color LAKER_BLUE =
+      new java.awt.Color(0, 101, 164);
 
   /** The number of total processes to be displayed. */
   private int max = 10;
@@ -33,22 +45,36 @@ public class FinalStatsPanel extends JPanel {
     header = new JLabel("Proc   Refs   Faults", SwingConstants.CENTER);
     statPanel = new JPanel();
     pairs = new JLabel[max];
-    statLabel = new JLabel("Final Statistics", SwingConstants.CENTER);
+    statLabel = new JLabel("<html>Final Statistics<br>", SwingConstants.CENTER);
 
     // Define the layout i.e. everything will be dropped into a box.
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-    // Add the components.
+    // Customize the panel title.
     add(statLabel);
+    setStandards(statLabel);
     add(header);
+    setStandards(header);
+    header.setBackground(LAKER_BLUE);
+
+
     int i;
     for ( i = 0; i < max; i++ ) {
-      pairs[i] = new JLabel("Stats will be displayed here", SwingConstants.CENTER);
+      pairs[i] = new JLabel("", SwingConstants.CENTER);
+      setStandards(pairs[i]);
       add(pairs[i]);
     }
 
     setVisible(true);
 
+  }
+
+  /********************************************
+  * Sets some aesthetics for the panel.
+  * @param field is the label to be customized
+  ********************************************/
+  private void setStandards ( JLabel field) {
+    field.setFont(NORMAL_FONT);
   }
 
   /******************************************

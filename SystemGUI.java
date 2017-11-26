@@ -2,6 +2,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Hashtable;
@@ -14,6 +15,9 @@ import java.util.Hashtable;
 * @since 11/22/2017
 **************************************************/
 public class SystemGUI extends JFrame {
+
+  /** Objects of the class are now serializable. */
+	private static final long serialVersionUID = 1L;
 
   /** Panel for the frame table */
   private PhysicalStatePanel memory;
@@ -86,10 +90,10 @@ public class SystemGUI extends JFrame {
   * ease of customization.
   *********************************************/
   private void setBoundaries () {
-    memory.setBackground(Color.BLUE);
-    pageTable.setBackground(LAKER_BLUE);
-    stats.setBackground(Color.RED);
-    commands.setBackground(Color.GREEN);
+    memory.setBackground(LAKER_BLUE);
+    //pageTable.setBackground(LAKER_BLUE);
+    stats.setBackground(LAKER_BLUE);
+    //commands.setBackground(Color.GREEN);
   }
 
   /***************************************
@@ -115,7 +119,7 @@ public class SystemGUI extends JFrame {
   * @param pid is the process that made a reference.
   * @param ref is the page that was referenced.
   **************************************************/
-  public void displayReference ( int pid, String ref ) {
+  public void displayReference ( int pid, int ref ) {
     commands.setReference(pid, ref);
   }
 

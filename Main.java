@@ -23,11 +23,32 @@ import java.util.LinkedList;
 **********************************************************/
 public class Main {
 
+  // private int locker;
+
+  /***************************************
+  * Handles an incorrect close of the GUI.
+  ***************************************/
+  /*public void synchGUI ( boolean lock) {
+    while(!lock) {
+        try {
+            wait();
+        } catch (InterruptedException e) {
+          System.out.println("The GUI was closed by Ctrl-C or exit\n");
+        }
+    }
+  }
+
+  *************
+  * Constructor.
+  *************
+  public Main() {
+    this.locker = false;
+  }*/
+
   public static void main (String[] args) {
 
     Tables tbl = new Tables();
     SystemGUI gui = new SystemGUI(args[0]);
-    Controller ctrl = new Controller(gui, tbl);
     Queue<Integer[]> myQ = new LinkedList<Integer[]>();
     String filename = args[0];
     try  {
@@ -36,9 +57,9 @@ public class Main {
 
       while ( (line = reader.readLine() ) != null) {
         sanitizeInput(line, myQ);
-        int procNum = Integer.parseInt(line.substring(1,2));
+        /*int procNum = Integer.parseInt(line.substring(1,2));
         System.out.println("Process : " + procNum);
-        String pageRef = line.substring(4,10);
+        //String pageRef = line.substring(4,10);
         int pageNum = Integer.parseInt(line.substring(4,10),2);
         System.out.println("Page referenced: " + pageNum + "\n");
 
@@ -46,7 +67,7 @@ public class Main {
         int freeFrame = tbl.checkFreeFrame();
 
         if ( tbl.checkPageInTable(procNum, pageNum) ) { // Check in memory
-          ctrl.updateReference(procNum, pageRef);
+          ctrl.updateReference(procNum, pageNum);
 
           // Print message to the user and updated reference count.
           System.out.println("The page is already in physical memory!");
@@ -59,7 +80,7 @@ public class Main {
           tbl.addCandidateFrame(frameOfInterest);
 
         } else if ( freeFrame >= 0) { // Check for free frames.
-          ctrl.updateReference(procNum, pageRef);
+          ctrl.updateReference(procNum, pageNum);
 
           tbl.updateProcessFaultCount(procNum);
           tbl.updateProcessRefCount(procNum);
@@ -74,7 +95,7 @@ public class Main {
           tbl.addCandidateFrame(freeFrame);
 
         } else { // Find a victim and replace them.
-          ctrl.updateReference(procNum, pageRef);
+          ctrl.updateReference(procNum, pageNum);
 
           tbl.updateProcessFaultCount(procNum);
           tbl.updateProcessRefCount(procNum);
@@ -108,7 +129,7 @@ public class Main {
         System.out.println("Frame# ProcID  Page#");
         tbl.printFrameTableState();
         ctrl.updateFrameTable();
-        tbl.printPageTableState(procNum);
+        tbl.printPageTableState(procNum);*/
 
       }
     } catch ( IOException e) {
@@ -117,9 +138,14 @@ public class Main {
       System.exit(1);
     }
 
+    boolean guiLocker = false;
+    Controller ctrl = new Controller(gui, tbl, myQ, guiLocker);
+
+    //synchGUI()
+
     // Report final statistics
-    ctrl.updateStats();
-    tbl.printFinalStats();
+    //ctrl.updateStats();
+    //tbl.printFinalStats();
   }
 
   /*************************************************

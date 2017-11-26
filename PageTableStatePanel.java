@@ -1,6 +1,8 @@
 import java.util.Hashtable;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 /*************************************************
@@ -12,6 +14,21 @@ import javax.swing.BoxLayout;
 * @since 11/22/2017
 **************************************************/
 public class PageTableStatePanel extends JPanel {
+
+  /** Objects of the class are now serializable. */
+  private static final long serialVersionUID = 1L;
+
+  /** The font for most text in the GUI. */
+	private static final Font NORMAL_FONT =
+			new Font("Cooper Black", Font.PLAIN, 10);
+
+  /** The font for most text in the GUI. */
+  private static final Font HEADER_FONT =
+    	new Font("Cooper Black", Font.PLAIN, 20);
+
+  /** The GV blue color. */
+  private static final java.awt.Color LAKER_BLUE =
+      new java.awt.Color(0, 101, 164);
 
   /** The panel for the current page table state. */
   private JPanel pageTableStatePanel;
@@ -35,13 +52,16 @@ public class PageTableStatePanel extends JPanel {
     // Create the main components
     int i;
     pageTableStatePanel = new JPanel();
-    pidLabel = new JLabel("Process Table: P ", SwingConstants.CENTER);
+    pidLabel = new JLabel("Process Table: P", SwingConstants.CENTER);
     pairs = new JLabel[max];
 
-    // Add the components
+    // Add and customize the components
     add(pidLabel);
+    pidLabel.setFont(HEADER_FONT);
+    pidLabel.setBackground(LAKER_BLUE);
     for ( i = 0 ; i < max ; i++ ) {
       pairs[i] = new JLabel("", SwingConstants.CENTER);
+      setStandards(pairs[i]);
       add(pairs[i]);
     }
 
@@ -60,7 +80,7 @@ public class PageTableStatePanel extends JPanel {
   public void redrawTable ( Hashtable<Integer,Integer> table, int pid ) {
 
     // Relabel the page table
-    pidLabel.setText("Process Table: P" + pid + "\n");
+    pidLabel.setText("Process Table: P" + pid );
 
     // Reset the text
     resetText();
@@ -72,9 +92,6 @@ public class PageTableStatePanel extends JPanel {
       pairs[counter].setText(onePair);
       counter++;
     }
-
-    //pageTableStatePanel.revalidate();
-    //pageTableStatePanel.repaint();
   }
 
   /****************************************************
@@ -90,9 +107,11 @@ public class PageTableStatePanel extends JPanel {
     }
   }
 
-  /**
-  * TO-DO
-  * Needs access to the page table of the given process
-  */
-
+  /********************************************
+  * Sets some aesthetics for the panel.
+  * @param field is the label to be customized
+  ********************************************/
+  private void setStandards ( JLabel field) {
+    field.setFont(NORMAL_FONT);
+  }
 }

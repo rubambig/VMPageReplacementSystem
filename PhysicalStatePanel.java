@@ -3,10 +3,14 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+
 /*************************************************
 * The panel for the current physical memory state.
 * Displays the current state of the frame table.
@@ -17,6 +21,9 @@ import java.awt.BorderLayout;
 **************************************************/
 
 public class PhysicalStatePanel extends JPanel {
+
+  /** Objects of the class are now serializable. */
+	private static final long serialVersionUID = 1L;
 
   /** A panel for the current physical state. */
   private JPanel physicalStatePanel;
@@ -30,6 +37,22 @@ public class PhysicalStatePanel extends JPanel {
   /** The number of rows in the frame table. */
   private int rowMax = 16;
 
+  /** The font for most text in the GUI. */
+	private static final Font NORMAL_FONT =
+			new Font("Cooper Black", Font.PLAIN, 15);
+
+  /** The font for most text in the GUI. */
+  private static final Font HEADER_FONT =
+    	new Font("Cooper Black", Font.PLAIN, 20);
+
+  /** Creates a border constant. */
+  private static final Border CREATE_EMPTY_BORDER =
+    	BorderFactory.createEmptyBorder(3, 3, 3, 3);
+
+  /** The GV blue color. */
+  private static final java.awt.Color LAKER_BLUE =
+      new java.awt.Color(0, 101, 164);
+
   /***************************************
   * Instantiates the physical state panel.
   ****************************************/
@@ -39,17 +62,21 @@ public class PhysicalStatePanel extends JPanel {
 
     // Create the objects
     physicalStatePanel = new JPanel();
-    pageState = new JLabel("Physical Memory State", SwingConstants.CENTER);
+    pageState = new JLabel("<html>Physical Memory State<br>", SwingConstants.CENTER);
 
     // Make it pretty
     setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-    // Add the components
+    // Customize the header.
     add(pageState);
+    pageState.setBackground(LAKER_BLUE);
+    pageState.setFont(HEADER_FONT);
+
     pairs = new JLabel[rowMax];
     int i;
     for ( i = 0; i < rowMax; i++ ) {
       pairs[i] = new JLabel("", SwingConstants.CENTER);
+      setStandards(pairs[i]);
       add(pairs[i]);
     }
 
@@ -78,8 +105,13 @@ public class PhysicalStatePanel extends JPanel {
     revalidate();
     repaint();
   }
-  /**
-  * TO-DO
-  * Needs access to the array of frames
-  */
+
+  /********************************************
+  * Sets some aesthetics for the panel.
+  * @param field is the label to be customized
+  ********************************************/
+  private void setStandards ( JLabel field) {
+    field.setFont(NORMAL_FONT);
+    field.setBorder(CREATE_EMPTY_BORDER);
+  }
 }
