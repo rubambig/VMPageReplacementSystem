@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Queue;
+import java.util.LinkedList;
 /*********************************************************
 * The Virtual Memory Management Manager a.k.a Controller
 * Listens for actions on the user GUI.
@@ -26,12 +28,14 @@ public class Main {
     Tables tbl = new Tables();
     SystemGUI gui = new SystemGUI(args[0]);
     Controller ctrl = new Controller(gui, tbl);
+    Queue<Integer[]> myQ = new LinkedList<Integer[]>();
     String filename = args[0];
     try  {
       BufferedReader reader = new BufferedReader(new FileReader(filename));
       String line  = null;
 
       while ( (line = reader.readLine() ) != null) {
+        sanitizeInput(line, myQ);
         int procNum = Integer.parseInt(line.substring(1,2));
         System.out.println("Process : " + procNum);
         String pageRef = line.substring(4,10);
@@ -116,5 +120,32 @@ public class Main {
     // Report final statistics
     ctrl.updateStats();
     tbl.printFinalStats();
+  }
+
+  /*************************************************
+  * Sanitizes the input from the file i.e. trims it
+  * Accounts for the possibility of 10 processes.
+  * Adds the input to the queue.
+  * @param line is the line that was read from file.
+  * @param queue is the queue of inputs
+  **************************************************/
+  private static void sanitizeInput ( String line, Queue<Integer[]> queue ) {
+
+    // The string that will produce the integers to be used
+    String newLine  = (line.replaceAll(":\t", "")).substring(1);
+    System.out.println("The new line is " + newLine);
+
+    // The array that will store the pid and page requested.
+    Integer [] mapping = new Integer[2];
+
+    // Check if we are dealing with process #10.
+    if ( newLine.length() == 7 ) {
+      mapping[0] = Integer.parseInt(newLine.substring(0,1));
+      mapping[1] = Integer.parseInt(newLine.substring(1),2);
+    } else {
+      mapping[0] = Integer.parseInt(newLine.substring(0,2));
+      mapping[1] = Integer.parseInt(newLine.substring(2),2);
+    }
+    queue.add(mapping);
   }
 }

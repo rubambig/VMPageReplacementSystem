@@ -41,7 +41,7 @@ public class FrameTable {
   /******************************************************
   * Checks if the page is already in the table.
   * @param pid is the process that owns the page.
-  * @param page the page that was referenced.
+  * @param page is the page that was referenced.
   * @return the presence of the page in the frame table.
   ******************************************************/
   public boolean checkPage(int pPid, int pPage){

@@ -15,7 +15,6 @@ import java.util.Hashtable;
 **************************************************/
 public class SystemGUI extends JFrame {
 
-
   /** Panel for the frame table */
   private PhysicalStatePanel memory;
 
