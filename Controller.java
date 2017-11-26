@@ -323,5 +323,12 @@ public void actionPerformed(ActionEvent e) {
       System.out.println("Skipping until completion\n");
     }
   }
+
+  /**
+  * - TO-DO
+  * - Change the color of the frame that is changed during a fault
+  * - Report the size of a page table as we are running
+  * - Different threads for each file?
+  */
 }
 }

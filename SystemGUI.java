@@ -1,10 +1,15 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+
 import java.util.Hashtable;
 /***************************************************
 * The main frame for the state of the entire system.
@@ -59,7 +64,7 @@ public class SystemGUI extends JFrame {
 
     setTitle("VM Replacement System, input file: " + filename);
 
-    setSize(600, 900);
+    setSize(600, 1200);
 
     setLayout(new GridLayout(dim,dim));
 
@@ -73,6 +78,7 @@ public class SystemGUI extends JFrame {
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true);
+
   }
 
   /**********************************************
@@ -93,7 +99,15 @@ public class SystemGUI extends JFrame {
     memory.setBackground(LAKER_BLUE);
     //pageTable.setBackground(LAKER_BLUE);
     stats.setBackground(LAKER_BLUE);
-    //commands.setBackground(Color.GREEN);
+    commands.setBackground(LAKER_BLUE);
+
+    Border line = BorderFactory.createLineBorder(Color.WHITE, 4, true);
+    Border matte = BorderFactory.createRaisedBevelBorder();
+
+    memory.setBorder(new CompoundBorder(matte,line));
+    pageTable.setBorder(new CompoundBorder(matte,line));
+    commands.setBorder(new CompoundBorder(matte,line));
+    stats.setBorder(new CompoundBorder(matte,line));
   }
 
   /***************************************

@@ -17,7 +17,11 @@ public class FinalStatsPanel extends JPanel {
 
   /** The font for most text in the GUI. */
 	private static final Font NORMAL_FONT =
-			new Font("Cooper Black", Font.PLAIN, 20);
+			new Font("Cooper Black", Font.PLAIN, 18);
+
+  /** The font for most text in the GUI. */
+  private static final Font HEADER_FONT =
+    	new Font("Cooper Black", Font.PLAIN, 20);
 
   /** The GV blue color. */
   private static final java.awt.Color LAKER_BLUE =
@@ -52,10 +56,9 @@ public class FinalStatsPanel extends JPanel {
 
     // Customize the panel title.
     add(statLabel);
-    setStandards(statLabel);
+    statLabel.setFont(HEADER_FONT);
     add(header);
     setStandards(header);
-    header.setBackground(LAKER_BLUE);
 
 
     int i;

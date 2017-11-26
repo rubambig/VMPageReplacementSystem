@@ -39,7 +39,7 @@ public class PhysicalStatePanel extends JPanel {
 
   /** The font for most text in the GUI. */
 	private static final Font NORMAL_FONT =
-			new Font("Cooper Black", Font.PLAIN, 15);
+			new Font("Cooper Black", Font.PLAIN, 18);
 
   /** The font for most text in the GUI. */
   private static final Font HEADER_FONT =
