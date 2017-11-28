@@ -143,7 +143,7 @@ public class SystemGUI extends JFrame {
   }
 
   /********************************************
-  * Passes teh victim to the commands panel.
+  * Passes the victim to the commands panel.
   * @param vic is the victim that was picked.
   *********************************************/
   public void displayVictim( int vic ) {

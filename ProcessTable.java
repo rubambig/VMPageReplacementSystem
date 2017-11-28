@@ -1,4 +1,3 @@
-import java.util.*;
 /******************************************************************
 * A process table data structure
 * Keeps track of 10 processes currently running in the background.
@@ -109,10 +108,4 @@ public class ProcessTable {
   public PCB [] getPCBArray () {
     return this.pcbTable;
   }
-
-  /**
-  * TO-DO
-  * - Send the current state of a PCB as requested by controller
-  */
-
 }

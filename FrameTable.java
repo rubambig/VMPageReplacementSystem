@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.Random;
 /************************************************************
 * A frame table data structure
 * Keeps track of process and pages associated with frames.

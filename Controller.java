@@ -185,6 +185,7 @@ private void handlePageInMemory( int pid, int page ) {
 * @param freeFrame is the frame that is available.
 *****************************************************/
 private void handleFreeFrameAvailable( int pid, int page, int freeFrame ) {
+
   // Update the referenced page on the GUI.
   this.updateReference(pid, page);
 

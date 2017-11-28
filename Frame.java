@@ -1,4 +1,3 @@
-import java.util.*;
 /***************************
 * A frame data structure
 * @author Gloire Rubambiza
@@ -17,12 +16,11 @@ public class Frame {
   * To be used as part of frame table.
   *********************************************/
   public Frame () {
-    //this.frameNumber = fnumber;
     this.processPID = -1;
     this.page = -1;
   }
 
-  /********************************************
+  /*******************************************
   * Get the process associated with the frame.
   ********************************************/
   public int getPID () {

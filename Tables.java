@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Hashtable;
 /*********************************************************
 * The Table Manager.
 * Maintains one process/frame table to handle page faults.

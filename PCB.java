@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Hashtable;
 /************************************************************
 * A Process Control Block (PCB) data structure for a process.
 * @author Gloire Rubambiza
