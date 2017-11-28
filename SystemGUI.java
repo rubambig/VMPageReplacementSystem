@@ -50,7 +50,7 @@ public class SystemGUI extends JFrame {
   * Instantiates all the panels representing the system.
   * @param filename is the input file
   *****************************************************/
-  public SystemGUI(String filename) {
+  public SystemGUI() {
 
     super();
 
@@ -62,7 +62,7 @@ public class SystemGUI extends JFrame {
 
     commands = new CommandsPanel();
 
-    setTitle("VM Replacement System, input file: " + filename);
+    setTitle("Virtual Memory Page Replacement System (ViMPaReS)");
 
     setSize(600, 1200);
 

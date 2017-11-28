@@ -83,17 +83,16 @@ public class Controller implements ActionListener {
 
   /*******************************************
   * Instructs the GUI to display final stats.
-  * @param pcbArray is the array of PCBs.
   *******************************************/
   public void updateStats () {
     gui.displayStats(table.passPCBArray());
   }
 
   /********************************************************************
-  * Pops on input from the queue to be read when the user presses next.
+  * Pops input from the queue to be read when the user presses next.
   * Tells the controller whether the read caused a page fault.
   * Otherwise the LRU Queue is updated with the least recently
-  * used page if the page is already in memory.
+  * used frame if the page is already in memory.
   * @param queue is the input queue.
   * @return 1 if we're done reading input, -1 if there was a page
   * fault, 0 if the page was already in memory.
@@ -103,15 +102,14 @@ public class Controller implements ActionListener {
     // Check if we have input.
     Integer [] pair = new Integer[2];
     if ( ( pair = myQ.poll() ) == null ) { // Error checking
-      System.out.println("The inputs are done!\n");
-      return 1;
+      return 1; // Input is done.
     }
 
     // Send the input to check for a page fault.
     int procNum =  pair[0];
     int page = pair[1];
     if ( isFault(procNum, page) ) {
-      return -1;
+      return -1; // Page fault occured.
     } else {
       return 0;
     }
@@ -301,14 +299,12 @@ public class Controller implements ActionListener {
         while ( check >= 0 ) {
           check = this.readNext(input);
           if (check < 0 ) {
-            // Popup saying it was a page fault?
             break;
           } else if ( check > 0 ) { // Input ended while searching for page fault.
             this.updateStats();
             this.disableButtons(userActionBtns);
             break;
           }
-          System.out.println("Trying to find the next fault!\n");
         }
       }
     } else if ( click.equals(runc) ) {
@@ -320,10 +316,12 @@ public class Controller implements ActionListener {
           this.disableButtons(userActionBtns);
           break;
         }
-        System.out.println("Skipping until completion\n");
       }
     } else if ( click.equals(exit) ) {
       System.exit(0);
     }
   }
+  /** TO-DO
+  * Change the logic if we're reading to next fault.
+  ***/
 }

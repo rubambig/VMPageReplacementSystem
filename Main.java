@@ -1,12 +1,15 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-
+import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.File;
+
 import java.util.Queue;
 import java.util.LinkedList;
 /*********************************************************
@@ -26,10 +29,13 @@ public class Main {
 
   public static void main (String[] args) {
 
+    String filename = "";
+    FileChoice chooser = new FileChoice();
+    filename = chooser.chooseFile();
     Tables tbl = new Tables();
-    SystemGUI gui = new SystemGUI(args[0]);
+    SystemGUI gui = new SystemGUI();
     Queue<Integer[]> myQ = new LinkedList<Integer[]>();
-    String filename = args[0];
+
     try  {
       BufferedReader reader = new BufferedReader(new FileReader(filename));
       String line  = null;

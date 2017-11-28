@@ -63,14 +63,41 @@ public class FrameTable {
   *  -1 if the frame table is empty.
   *************************************************/
   public int getFreeFrame() {
-    int i;
-    for ( i = 0; i < max; i++) {
-      if ( this.freeFrameList[i] ) {
-        this.freeFrameList[i] = false;
-        return i;
+    int i, j, limit = 15;
+
+    // Simulate pseudo randomness
+    Random rnd = new Random();
+    i = 0;
+    while ( i < limit ) {
+      int freeFrame = rnd.nextInt(limit);
+      if ( isFree(freeFrame) ) {
+        return freeFrame;
+      }
+      i++;
+    }
+
+    // Try sequentially after 16 unsuccessful "random" picks.
+    for ( j = 0; j < max; j++) {
+      if ( isFree(j) ) {
+        return j;
       }
     }
     return -1;
+  }
+
+  /*****************************************
+  * Checks if a given frame is free.
+  * Sets the frame to false if it's free.
+  * @param frame is the frame to be checked.
+  * @return true if it is, false otherwise.
+  ******************************************/
+  private boolean isFree( int frame) {
+
+    if( this.freeFrameList[frame] ) {
+      this.freeFrameList[frame] = false;
+      return true;
+    }
+    return false;
   }
 
   /***************************************************

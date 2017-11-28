@@ -58,7 +58,7 @@ public class CommandsPanel extends JPanel {
 
     next = new JButton("Next Input");
 
-    runf = new JButton("Run to Next Page Fault");
+    runf = new JButton("Run to Next Fault");
 
     runc = new JButton("Run to Completion");
 
