@@ -12,21 +12,18 @@ import java.awt.GridLayout;
 * The panel for the user commands.
 * Communicates with the GUI to set ActionListeners
 * in the controller.
+* Displays the LRU victim and memory reference.
 * @author Gloire Rubambiza
 * @since 11/22/2017
 **************************************************/
 public class CommandsPanel extends JPanel {
 
   /** Objects of the class are now serializable. */
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
   /** The font for most text in the GUI. */
-	private static final Font NORMAL_FONT =
-			new Font("Cooper Black", Font.BOLD, 20);
-
-  // /** The font for most text in the GUI. */
-  // private static final Font HEADER_FONT =
-  //   	new Font("Cooper Black", Font.BOLD, 16);
+  private static final Font NORMAL_FONT =
+  new Font("Cooper Black", Font.BOLD, 20);
 
   /** The panel for the commands. */
   private JPanel command;
@@ -78,7 +75,6 @@ public class CommandsPanel extends JPanel {
     add(exit);
 
     setVisible(true);
-
   }
 
   /*******************************************
@@ -105,9 +101,12 @@ public class CommandsPanel extends JPanel {
     victim.setBorder(line);
     ref.setFont(NORMAL_FONT);
     next.setFont(NORMAL_FONT);
+    next.setForeground(Color.GREEN);
     runf.setFont(NORMAL_FONT);
+    runf.setForeground(Color.ORANGE);
     runc.setFont(NORMAL_FONT);
     exit.setFont(NORMAL_FONT);
+    exit.setForeground(Color.RED);
   }
 
   /*******************************************
@@ -117,7 +116,6 @@ public class CommandsPanel extends JPanel {
   public void setVictim( int vic ) {
     victim.setText("LRU Victim --> Frame " + vic );
   }
-
 
   /**************************************************
   * Resets the label for the memory reference

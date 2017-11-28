@@ -1,5 +1,4 @@
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
@@ -8,27 +7,22 @@ import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Dimension;
 import java.awt.BorderLayout;
-
 /*************************************************
 * The panel for the current physical memory state.
 * Displays the current state of the frame table.
-* Notifies the user whether the page is in memory
-* or when a page fault occurs.
 * @author Gloire Rubambiza
 * @since 11/20/2017
 **************************************************/
-
 public class PhysicalStatePanel extends JPanel {
 
   /** Objects of the class are now serializable. */
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
   /** A panel for the current physical state. */
   private JPanel physicalStatePanel;
 
-  /** A table of PID/page pairs. */
+  /** An array of PID/page pairs. */
   private JLabel [] pairs;
 
   /** The label for the frame table **/
@@ -38,20 +32,20 @@ public class PhysicalStatePanel extends JPanel {
   private int rowMax = 16;
 
   /** The font for most text in the GUI. */
-	private static final Font NORMAL_FONT =
-			new Font("Cooper Black", Font.PLAIN, 18);
+  private static final Font NORMAL_FONT =
+  new Font("Cooper Black", Font.PLAIN, 18);
 
   /** The font for most text in the GUI. */
   private static final Font HEADER_FONT =
-    	new Font("Cooper Black", Font.PLAIN, 20);
+  new Font("Cooper Black", Font.BOLD, 20);
 
   /** Creates a border constant. */
   private static final Border CREATE_EMPTY_BORDER =
-    	BorderFactory.createEmptyBorder(3, 3, 3, 3);
+  BorderFactory.createEmptyBorder(3, 3, 3, 3);
 
   /** The GV blue color. */
   private static final java.awt.Color LAKER_BLUE =
-      new java.awt.Color(0, 101, 164);
+  new java.awt.Color(0, 101, 164);
 
   /***************************************
   * Instantiates the physical state panel.
@@ -60,11 +54,12 @@ public class PhysicalStatePanel extends JPanel {
 
     super();
 
-    // Create the objects
+    // Create the objects.
     physicalStatePanel = new JPanel();
-    pageState = new JLabel("<html>Physical Memory State<br>", SwingConstants.CENTER);
+    String title = "<html>Physical Memory State<br>";
+    pageState = new JLabel(title, SwingConstants.CENTER);
 
-    // Make it pretty
+    // Set the layout to drop everything into a box.
     setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     // Customize the header.
@@ -83,10 +78,6 @@ public class PhysicalStatePanel extends JPanel {
     setVisible(true);
   }
 
-  /**
-  * TO-DO
-  * - Repaint the frame table when new changes occur
-  * - Take the frame table w/o calling the frametable class directly
   /***********************************************
   * Repaints the frame table as new changes occur.
   * @param table is the frame table.
@@ -101,9 +92,6 @@ public class PhysicalStatePanel extends JPanel {
       String display = "Frame " + i + " P" + pid + "  Page " + page;
       pairs[i].setText(display);
     }
-
-    revalidate();
-    repaint();
   }
 
   /********************************************

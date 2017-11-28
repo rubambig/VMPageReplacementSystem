@@ -22,7 +22,7 @@ import java.util.Hashtable;
 public class SystemGUI extends JFrame {
 
   /** Objects of the class are now serializable. */
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
   /** Panel for the frame table */
   private PhysicalStatePanel memory;
@@ -91,12 +91,10 @@ public class SystemGUI extends JFrame {
   }
 
   /*********************************************
-  * Makes the background more visible for
-  * ease of customization.
+  * Sets the backgrounds and borders of panels.
   *********************************************/
   private void setBoundaries () {
     memory.setBackground(LAKER_BLUE);
-    //pageTable.setBackground(LAKER_BLUE);
     stats.setBackground(LAKER_BLUE);
     commands.setBackground(LAKER_BLUE);
 
@@ -111,7 +109,8 @@ public class SystemGUI extends JFrame {
 
   /***************************************
   * Passes the page table to be displayed.
-  * @param pTable is the page table
+  * @param pTable is the page table.
+  * @param pid is the pid of the process.
   ****************************************/
   public void displayPageTable( Hashtable<Integer, Integer> pTable, int pid) {
     pageTable.redrawTable(pTable, pid);
@@ -121,7 +120,6 @@ public class SystemGUI extends JFrame {
   * Gets a reference to the frame table i.e. current
   * physical state of memory.
   * Passes the frame table to the physical state panel.
-  * @return an array of frames.
   *****************************************************/
   public void displayFrameTable (Frame [] fTable) {
     memory.redrawTable(fTable);
@@ -151,10 +149,4 @@ public class SystemGUI extends JFrame {
   public void displayVictim( int vic ) {
     commands.setVictim(vic);
   }
-
-
-  /**
-   * -TO-DO Pass the frame that was chosen as a victim, change the font color
-   */
-
 }

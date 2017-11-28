@@ -8,8 +8,6 @@ import javax.swing.BoxLayout;
 /*************************************************
 * The panel for the page table of a process.
 * Displays the current state of the page table.
-* Dynamically repaints itself based on the size
-* of the process' page table.
 * @author Gloire Rubambiza
 * @since 11/22/2017
 **************************************************/
@@ -18,17 +16,17 @@ public class PageTableStatePanel extends JPanel {
   /** Objects of the class are now serializable. */
   private static final long serialVersionUID = 1L;
 
-  /** The font for most text in the GUI. */
-	private static final Font NORMAL_FONT =
-			new Font("Cooper Black", Font.PLAIN, 10);
+  /** The font for the labels. */
+  private static final Font NORMAL_FONT =
+  new Font("Cooper Black", Font.PLAIN, 18);
 
-  /** The font for most text in the GUI. */
+  /** The font for the header. */
   private static final Font HEADER_FONT =
-    	new Font("Cooper Black", Font.PLAIN, 20);
+  new Font("Cooper Black", Font.BOLD, 20);
 
   /** The GV blue color. */
   private static final java.awt.Color LAKER_BLUE =
-      new java.awt.Color(0, 101, 164);
+  new java.awt.Color(0, 101, 164);
 
   /** The panel for the current page table state. */
   private JPanel pageTableStatePanel;
@@ -52,7 +50,7 @@ public class PageTableStatePanel extends JPanel {
     // Create the main components
     int i;
     pageTableStatePanel = new JPanel();
-    pidLabel = new JLabel("Process Table: P", SwingConstants.CENTER);
+    pidLabel = new JLabel("<html>Process Table: P<br>", SwingConstants.CENTER);
     pairs = new JLabel[max];
 
     // Add and customize the components
@@ -60,7 +58,7 @@ public class PageTableStatePanel extends JPanel {
     pidLabel.setFont(HEADER_FONT);
     pidLabel.setBackground(LAKER_BLUE);
     for ( i = 0 ; i < max ; i++ ) {
-      pairs[i] = new JLabel("", SwingConstants.CENTER);
+      pairs[i] = new JLabel(""+i, SwingConstants.CENTER);
       setStandards(pairs[i]);
       add(pairs[i]);
     }

@@ -15,17 +15,13 @@ public class FinalStatsPanel extends JPanel {
   /** Objects of the class are now serializable. */
 	private static final long serialVersionUID = 1L;
 
-  /** The font for most text in the GUI. */
+  /** The font for the stats. */
 	private static final Font NORMAL_FONT =
 			new Font("Cooper Black", Font.PLAIN, 18);
 
-  /** The font for most text in the GUI. */
+  /** The font for the header. */
   private static final Font HEADER_FONT =
-    	new Font("Cooper Black", Font.PLAIN, 20);
-
-  /** The GV blue color. */
-  private static final java.awt.Color LAKER_BLUE =
-      new java.awt.Color(0, 101, 164);
+    	new Font("Cooper Black", Font.BOLD, 20);
 
   /** The number of total processes to be displayed. */
   private int max = 10;
@@ -46,7 +42,7 @@ public class FinalStatsPanel extends JPanel {
     super();
 
     // Create the components
-    header = new JLabel("Proc   Refs   Faults", SwingConstants.CENTER);
+    header = new JLabel("Proc |  Refs  |  Faults", SwingConstants.CENTER);
     statPanel = new JPanel();
     pairs = new JLabel[max];
     statLabel = new JLabel("<html>Final Statistics<br>", SwingConstants.CENTER);
@@ -60,7 +56,6 @@ public class FinalStatsPanel extends JPanel {
     add(header);
     setStandards(header);
 
-
     int i;
     for ( i = 0; i < max; i++ ) {
       pairs[i] = new JLabel("", SwingConstants.CENTER);
@@ -69,7 +64,6 @@ public class FinalStatsPanel extends JPanel {
     }
 
     setVisible(true);
-
   }
 
   /********************************************

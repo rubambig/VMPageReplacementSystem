@@ -17,6 +17,9 @@ public class FrameTable {
   /** The max amount of frames to be created. */
   private int max = 16;
 
+  /** The max number of times we simulate searching for a frame. */
+  private final int randomLimit = 10000;
+
   /** The list of free frames in the system. */
   private boolean [] freeFrameList;
 
@@ -63,13 +66,13 @@ public class FrameTable {
   *  -1 if the frame table is empty.
   *************************************************/
   public int getFreeFrame() {
-    int i, j, limit = 15;
+    int i, j;
 
-    // Simulate pseudo randomness
+    // Simulate pseudorandomness
     Random rnd = new Random();
     i = 0;
-    while ( i < limit ) {
-      int freeFrame = rnd.nextInt(limit);
+    while ( i < randomLimit ) {
+      int freeFrame = rnd.nextInt(max);
       if ( isFree(freeFrame) ) {
         return freeFrame;
       }
@@ -187,7 +190,6 @@ public class FrameTable {
   *********************************************/
   public int pickLRUCandidate () {
     int vic = this.kicker.remove();
-    System.out.println("Picking victim frame: " + vic + "\n");
     return vic;
   }
 

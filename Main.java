@@ -1,10 +1,3 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JFileChooser;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,20 +5,14 @@ import java.io.File;
 
 import java.util.Queue;
 import java.util.LinkedList;
-/*********************************************************
-* The Virtual Memory Management Manager a.k.a Controller
-* Listens for actions on the user GUI.
-* Sends messages to the process table and frame table with
-* any new updates dictacted by the file input.
-* Handles the controller communicating with process and
-* frame tables.
-* Sends any updates the viewer about the state of the
-* process currently making memory references.
+/******************************************************
+* Main entry into the program.
+* Reads an input file, creates a table and GUI.
+* Passes the table, input, and file to the controller.
 * @author Gloire Rubambiza
 * @since 11/22/2017
-**********************************************************/
+******************************************************/
 public class Main {
-
 
   public static void main (String[] args) {
 
@@ -54,7 +41,7 @@ public class Main {
   }
 
   /*************************************************
-  * Sanitizes the input from the file i.e. trims it
+  * Sanitizes the input from the file i.e. trims it.
   * Accounts for the possibility of 10 processes.
   * Adds the input to the queue.
   * @param line is the line that was read from file.
@@ -64,7 +51,6 @@ public class Main {
 
     // The string that will produce the integers to be used
     String newLine  = (line.replaceAll(":\t", "")).substring(1);
-    System.out.println("The new line is " + newLine);
 
     // The array that will store the pid and page requested.
     Integer [] mapping = new Integer[2];
