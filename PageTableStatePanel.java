@@ -65,7 +65,6 @@ public class PageTableStatePanel extends JPanel {
       add(pairs[i]);
     }
 
-
     // Define the layout i.e. everything will be dropped into a box.
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

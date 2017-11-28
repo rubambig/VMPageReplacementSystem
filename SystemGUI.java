@@ -73,10 +73,9 @@ public class SystemGUI extends JFrame {
     add(commands);
     add(stats);
 
-
     setBoundaries ();
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     setVisible(true);
 
   }
@@ -144,5 +143,18 @@ public class SystemGUI extends JFrame {
   public void displayStats ( PCB [] pcbArray ) {
     stats.displayFinalStats(pcbArray);
   }
+
+  /********************************************
+  * Passes teh victim to the commands panel.
+  * @param vic is the victim that was picked.
+  *********************************************/
+  public void displayVictim( int vic ) {
+    commands.setVictim(vic);
+  }
+
+
+  /**
+   * -TO-DO Pass the frame that was chosen as a victim, change the font color
+   */
 
 }

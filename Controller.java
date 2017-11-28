@@ -22,31 +22,25 @@ public class Controller implements ActionListener {
   private Queue<Integer[]> input;
 
   /** The buttons for handling user actions. */
-  private JButton next, runf, runc;
+  private JButton next, runf, runc, exit;
 
   /** The array of action buttons. */
   private JButton [] userActionBtns;
-
-  /** The size of the buttons. */
-  private final int bSize  = 30;
-
-  private boolean locker;
 
   /*************************************************
   * Instantiates the tables, GUI, and buttons to be
   * used for user actions.
   *************************************************/
-  public Controller (SystemGUI pGUI, Tables pTable, Queue<Integer[]> pInput,
-                      boolean myLock ) {
+  public Controller (SystemGUI pGUI, Tables pTable, Queue<Integer[]> pInput) {
 
     gui = pGUI;
     table = pTable;
     input = pInput;
-    locker = myLock;
     userActionBtns = gui.sendButtons();
     next = userActionBtns[0];
     runf = userActionBtns[1];
     runc = userActionBtns[2];
+    exit = userActionBtns[3];
     addCommandListeners();
   }
 
@@ -57,6 +51,7 @@ public class Controller implements ActionListener {
     next.addActionListener(this);
     runf.addActionListener(this);
     runc.addActionListener(this);
+    exit.addActionListener(this);
   }
 
   /**********************************************
@@ -69,10 +64,8 @@ public class Controller implements ActionListener {
   }
 
   /**************************************************
-  * Gets a reference to the frame table i.e. current
-  * physical state of memory.
-  * Passes it to the GUI.
-  * @return an array of frames.
+  * Instructs the GUI to display the latest state of
+  * the frame table i.e. physical memory.
   *************************************************/
   public void updateFrameTable () {
     gui.displayFrameTable(table.passFrameTable());
@@ -158,177 +151,179 @@ public class Controller implements ActionListener {
 
     // The page is not in memory. It's a page fault, a replacement occured.
     return true;
-  }
-}
-
-/****************************************************
-* Handles the case of a page already being in memory
-* after the input is read.
-* @param pid is the PID of the process.
-* @param page is the page already in memory.
-*****************************************************/
-private void handlePageInMemory( int pid, int page ) {
-
-  // Update the referenced page on the GUI.
-  this.updateReference(pid, page);
-
-  // Update the reference count.
-  table.updateProcessRefCount(pid);
-
-  // Search which frame is associated with the process/page pair.
-  int frameOfInterest = (table.searchAssociatedFrame(pid, page))[0];
-
-  // Add the reference frame to LRU Queue as a replacement candidate.
-  table.addCandidateFrame(frameOfInterest);
-
-  // Display the page table for the process of interest.
-  this.updatePageTable(pid);
-
-}
-
-/****************************************************
-* Handles the case of a page fault with free frames
-* being available.
-* @param pid is the PID of the process.
-* @param page is the page already in memory.
-* @param freeFrame is the frame that is available.
-*****************************************************/
-private void handleFreeFrameAvailable( int pid, int page, int freeFrame ) {
-  // Update the referenced page on the GUI.
-  this.updateReference(pid, page);
-
-  // Update all the tables with the right info regarding the page fault.
-  table.updateProcessFaultCount(pid);
-  table.updateProcessRefCount(pid);
-  table.updateFrameTable(freeFrame, pid, page);
-  table.updatePageTable(false, pid, page, freeFrame);
-
-  // Add the reference frame to LRU Queue as a replacement candidate.
-  table.addCandidateFrame(freeFrame);
-
-  // Display the page table for the process of interest.
-  this.updatePageTable(pid);
-
-  // Display the frame table with the new updates.
-  this.updateFrameTable();
-
-  System.out.println("Page fault, there are free frames\n");
-}
-
-/****************************************************
-* Handles the case of replacing a page when a page fault
-* occurs and there are no free frame availables.
-* Picks a victim and updates the tables accordingly.
-* @param procNum is the PID of the process.
-* @param pageNum is the page already in memory.
-*****************************************************/
-private void handlePageReplacement( int procNum, int pageNum ) {
-
-  // Update the referenced page on the GUI.
-  this.updateReference(procNum, pageNum);
-
-  // Increment reference and fault counts for the process.
-  table.updateProcessFaultCount(procNum);
-  table.updateProcessRefCount(procNum);
-
-  // Find a victim.
-  int victim = table.pickVictim();
-
-  // Send the victim a message to update their page table.
-  int [] replacementPair = table.searchVictimPair(victim);
-  int pid = replacementPair[0];
-  int page = replacementPair[1];
-  table.updatePageTable(true, pid, page, victim);
-
-  // Send a message to the replacing process to update their page table.
-  table.updatePageTable(false, procNum, pageNum, victim);
-
-  // Update the frame table.
-  table.updateFrameTable(victim, procNum, pageNum);
-
-  // Add the reference frame to LRU Queue as a replacement candidate.
-  table.addCandidateFrame(victim);
-
-  // Update the page/frame table on the GUI.
-  this.updatePageTable(procNum);
-  this.updateFrameTable();
-
-  System.out.println("Page fault, victim was replaced!\n");
-}
-
-/******************************************************
-* Disables all the buttons when the input is done.
-* @param btns is the collection of user action buttons.
-*******************************************************/
-private void disableButtons( JButton[] btns ) {
-
-  int i;
-  for ( i = 0; i < 3; i++ ) {
-    btns[i].setEnabled(false);
-  }
-}
-
-/************************************
-* Notifies the GUI that we are done.
-************************************/
-public synchronized void notifyEnd() {
-  this.locker = true;
-  notifyAll();
-}
-
-
-@Override
-public void actionPerformed(ActionEvent e) {
-
-  if ( e.getSource() instanceof JButton && e.getSource() == next ) {
-
-    int check = this.readNext(input);
-    if ( check < 0 ) { // Page fault.
-      // Maybe a popup to say it's a page fault;
-    } else if ( check > 0 ) { // Inputs are done, deactivate buttons
-      this.updateStats();
-      this.disableButtons(userActionBtns);
     }
+  }
 
-  } else if ( e.getSource() instanceof JButton && e.getSource() == runf) {
+  /****************************************************
+  * Handles the case of a page already being in memory
+  * after the input is read.
+  * @param pid is the PID of the process.
+  * @param page is the page already in memory.
+  *****************************************************/
+  private void handlePageInMemory( int pid, int page ) {
 
-    int check = this.readNext(input);
+    // Update the referenced page on the GUI.
+    this.updateReference(pid, page);
 
-    // Keep reading until we're done with input or a page fault occurs.
-    if ( check < 0 ) { // We fault at the beginning.
-      // Popup saying it was a page fault?
-    } else { // We keep reading until we hit a page fault.
-      while ( check >= 0 ) {
-        check = this.readNext(input);
-        if (check < 0 ) {
-          // Popup saying it was a page fault?
-          break;
-        } else if ( check > 0 ) { // Input ended while searching for page fault.
+    // Update the reference count.
+    table.updateProcessRefCount(pid);
+
+    // Search which frame is associated with the process/page pair.
+    int frameOfInterest = (table.searchAssociatedFrame(pid, page))[0];
+
+    // Add the reference frame to LRU Queue as a replacement candidate.
+    table.addCandidateFrame(frameOfInterest);
+
+    // Display the page table for the process of interest.
+    this.updatePageTable(pid);
+
+  }
+
+  /****************************************************
+  * Handles the case of a page fault with free frames
+  * being available.
+  * @param pid is the PID of the process.
+  * @param page is the page already in memory.
+  * @param freeFrame is the frame that is available.
+  *****************************************************/
+  private void handleFreeFrameAvailable( int pid, int page, int freeFrame ) {
+    // Update the referenced page on the GUI.
+    this.updateReference(pid, page);
+
+    // Update all the tables with the right info regarding the page fault.
+    table.updateProcessFaultCount(pid);
+    table.updateProcessRefCount(pid);
+    table.updateFrameTable(freeFrame, pid, page);
+    table.updatePageTable(false, pid, page, freeFrame);
+
+    // Add the reference frame to LRU Queue as a replacement candidate.
+    table.addCandidateFrame(freeFrame);
+
+    // Display the page table for the process of interest.
+    this.updatePageTable(pid);
+
+    // Display the frame table with the new updates.
+    this.updateFrameTable();
+
+    System.out.println("Page fault, there are free frames\n");
+  }
+
+  /****************************************************
+  * Handles the case of replacing a page when a page fault
+  * occurs and there are no free frame availables.
+  * Picks a victim and updates the tables accordingly.
+  * @param procNum is the PID of the process.
+  * @param pageNum is the page already in memory.
+  *****************************************************/
+  private void handlePageReplacement( int procNum, int pageNum ) {
+
+    // Update the referenced page on the GUI.
+    this.updateReference(procNum, pageNum);
+
+    // Increment reference and fault counts for the process.
+    table.updateProcessFaultCount(procNum);
+    table.updateProcessRefCount(procNum);
+
+    // Find a victim.
+    int victim = table.pickVictim();
+
+    // Notify the GUI that a victim was picked.
+    this.notifyGUI(victim);
+
+    // Send the victim a message to update their page table.
+    int [] replacementPair = table.searchVictimPair(victim);
+    int pid = replacementPair[0];
+    int page = replacementPair[1];
+    table.updatePageTable(true, pid, page, victim);
+
+    // Send a message to the replacing process to update their page table.
+    table.updatePageTable(false, procNum, pageNum, victim);
+
+    // Update the frame table.
+    table.updateFrameTable(victim, procNum, pageNum);
+
+    // Add the reference frame to LRU Queue as a replacement candidate.
+    table.addCandidateFrame(victim);
+
+    // Update the page/frame table on the GUI.
+    this.updatePageTable(procNum);
+    this.updateFrameTable();
+
+    System.out.println("Page fault, victim was replaced!\n");
+  }
+
+  /***************************************************
+  * Notifies the GUI that a page replacement occured.
+  * GUI Updates who was the victim on the replacement.
+  * @param vic is the victim that was picked.
+  ****************************************************/
+  public void notifyGUI( int vic ) {
+    gui.displayVictim(vic);
+  }
+
+  /******************************************************
+  * Disables all the buttons when the input is done.
+  * @param btns is the collection of user action buttons.
+  *******************************************************/
+  private void disableButtons( JButton[] btns ) {
+
+    int i;
+    for ( i = 0; i < 3; i++ ) {
+      btns[i].setEnabled(false);
+    }
+  }
+
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+
+    // Get the source of event;
+    JButton click = (JButton) e.getSource();
+
+    if ( click.equals(next) ) {
+
+      int check = this.readNext(input);
+      if ( check < 0 ) { // Page fault.
+        // Maybe a popup to say it's a page fault;
+      } else if ( check > 0 ) { // Inputs are done, deactivate buttons
+        this.updateStats();
+        this.disableButtons(userActionBtns);
+      }
+
+    } else if ( click.equals(runf) ) {
+
+      int check = this.readNext(input);
+
+      // Keep reading until we're done with input or a page fault occurs.
+      if ( check < 0 ) { // We fault at the beginning.
+        // Popup saying it was a page fault?
+      } else { // We keep reading until we hit a page fault.
+        while ( check >= 0 ) {
+          check = this.readNext(input);
+          if (check < 0 ) {
+            // Popup saying it was a page fault?
+            break;
+          } else if ( check > 0 ) { // Input ended while searching for page fault.
+            this.updateStats();
+            this.disableButtons(userActionBtns);
+            break;
+          }
+          System.out.println("Trying to find the next fault!\n");
+        }
+      }
+    } else if ( click.equals(runc) ) {
+
+      int check;
+      while ( ( check = this.readNext(input)) > -2 ) {
+        if ( check == 1 ){
           this.updateStats();
           this.disableButtons(userActionBtns);
           break;
         }
-        System.out.println("Trying to find the next fault!\n");
+        System.out.println("Skipping until completion\n");
       }
-    }
-  } else if ( e.getSource() instanceof JButton && e.getSource() == runc ) {
-
-    int check;
-    while ( ( check = this.readNext(input)) > -2 ) {
-      if ( check == 1 ){
-        this.updateStats();
-        this.disableButtons(userActionBtns);
-        break;
-      }
-      System.out.println("Skipping until completion\n");
+    } else if ( click.equals(exit) ) {
+      System.exit(0);
     }
   }
-
-  /**
-  * - TO-DO
-  * - Change the color of the frame that is changed during a fault
-  * - Report the size of a page table as we are running
-  * - Different threads for each file?
-  */
-}
 }

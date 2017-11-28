@@ -36,6 +36,7 @@ public class Tables {
         return this.processTable.getPCBArray()[i].getTable();
       }
     }
+    System.out.println("The input might have more than 10 processes!\n");
     return null;
   }
 
@@ -79,7 +80,7 @@ public class Tables {
   /**********************************************************
   * Updates page table of the given process with new entries.
   * If the page exists, the function is used to remove the
-  * entry for a process whose frame has been chose as a
+  * entry for a process whose frame has been chosen as a
   * victim. Otherwise, we're inserting the frame/page pair.
   * @param exists tells where the page is already in the table.
   * @param pid is the PID of the process.
@@ -91,6 +92,7 @@ public class Tables {
 
   /****************************************************
   * Checks if there are any empty frames in the table.
+  * @return the number of the free frame.
   ****************************************************/
   public int checkFreeFrame() {
     return this.frameTable.getFreeFrame();
@@ -108,6 +110,7 @@ public class Tables {
 
   /***************************************
   * Adds a frame to the replacement queue.
+  * @param frame is the frame to be added.
   ****************************************/
   public void addCandidateFrame(int frame) {
     this.frameTable.addCandidate(frame);
@@ -139,24 +142,25 @@ public class Tables {
     this.frameTable.insertFrameEntry(frame, process, page);
   }
 
-  /**********************************************
-  * Prints the current state of the frame table.
-  ***********************************************/
+  /*******************************************************
+  * Prints the current state of the frame table to screen.
+  * Used in B-level logic of the program.
+  *******************************************************/
   public void printFrameTableState() {
     this.frameTable.printCurrentState();
   }
 
-  /********************************************************
-  * Prints the current state of the given PCB's page table.
+  /******************************************************************
+  * Prints the current state of the given PCB's page table to screen.
   * @param pid is the PID of the process.
-  *********************************************************/
+  ******************************************************************/
   public void printPageTableState( int pid ) {
     this.processTable.printPageTable(pid);
   }
 
-  /*****************************************************
-  * Prints the total memory references for each process.
-  ******************************************************/
+  /***************************************************************
+  * Prints the total memory references for each process to screen.
+  ****************************************************************/
   public void printFinalStats () {
     this.processTable.printStats();
   }

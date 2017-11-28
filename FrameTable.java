@@ -1,10 +1,11 @@
 import java.util.*;
 /************************************************************
 * A frame table data structure
-* Keeps track of process and page is associated with frames.
+* Keeps track of process and pages associated with frames.
 * Physical memory is specified to be 16 KB with 1KB frames.
 * There are 16 total frames in physical memory.
-* The frame table also keeps track of its free frames.
+* The frame table also keeps track of its free frames in a
+* frame.
 * @author Gloire Rubambiza
 * @since 11/12/2017
 ************************************************************/
@@ -22,9 +23,9 @@ public class FrameTable {
   /** The Queue for deciding which frame to vacate for a new page reference. */
   private Queue<Integer> kicker;
 
-  /*************************************
-  * Instantiates an array of 16 frames
-  *************************************/
+  /**********************************************************
+  * Instantiates an array of 16 frames and a free frame list.
+  ***********************************************************/
   public FrameTable () {
     this.frameTable = new Frame [max];
     this.freeFrameList = new boolean [max];
@@ -40,8 +41,8 @@ public class FrameTable {
 
   /******************************************************
   * Checks if the page is already in the table.
-  * @param pid is the process that owns the page.
-  * @param page is the page that was referenced.
+  * @param pPid is the process that owns the page.
+  * @param pPage is the page that was referenced.
   * @return the presence of the page in the frame table.
   ******************************************************/
   public boolean checkPage(int pPid, int pPage){
@@ -59,7 +60,7 @@ public class FrameTable {
   /**************************************************
   * Checks for empty spots in the frame table.
   * @return a free frame number if one is available,
-  *  -1 if the frame table is empty
+  *  -1 if the frame table is empty.
   *************************************************/
   public int getFreeFrame() {
     int i;
@@ -89,9 +90,9 @@ public class FrameTable {
     }
   }
 
-  /**************************************************
-  * Inspects the frame table as it currently stands.
-  **************************************************/
+  /**********************************
+  * Prints the frame table to screen.
+  ***********************************/
   public void printCurrentState() {
     int i;
     for ( i = 0; i < max; i++ ) {
@@ -103,6 +104,7 @@ public class FrameTable {
 
   /***************************************
   * Adds a frame to the replacement queue.
+  * @param frame is the frame to be added.
   ****************************************/
   public void addCandidate(int frame) {
     this.kicker.add(frame);
@@ -112,7 +114,6 @@ public class FrameTable {
   * Searches for which frame is associated with a PID/page pair.
   * @param pid is the PID of the process owning the frame.
   * @param page is the page located at the frame.
-  * @param frame is the frame that may need replacement.
   * @return the frame number associated with the PID/page pair.
   /****************************************************************/
   public int [] searchPotentialReplacement(int pPid, int pPage) {

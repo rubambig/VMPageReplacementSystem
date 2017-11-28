@@ -1,8 +1,12 @@
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import javax.swing.SwingConstants;
+
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.GridLayout;
 /*************************************************
 * The panel for the user commands.
@@ -18,26 +22,26 @@ public class CommandsPanel extends JPanel {
 
   /** The font for most text in the GUI. */
 	private static final Font NORMAL_FONT =
-			new Font("Cooper Black", Font.PLAIN, 20);
+			new Font("Cooper Black", Font.BOLD, 20);
 
-  /** The font for most text in the GUI. */
-  private static final Font HEADER_FONT =
-    	new Font("Cooper Black", Font.PLAIN, 16);
+  // /** The font for most text in the GUI. */
+  // private static final Font HEADER_FONT =
+  //   	new Font("Cooper Black", Font.BOLD, 16);
 
   /** The panel for the commands. */
   private JPanel command;
 
   /** The buttons for handling user actions. */
-  private JButton next, runf, runc;
+  private JButton next, runf, runc, exit;
 
   /** The label for the memory reference. */
   private JLabel ref;
 
-  /** The size of the buttons. */
-  private final int bSize  = 30;
+  /** The label for the LRU victim. */
+  private JLabel victim;
 
   /** The dimensions for the grid. */
-  private final int col = 1, row = 4;
+  private final int col = 1, row = 6;
 
   /*******************************************************
   * Instantiates the buttons to be used for user actions.
@@ -48,13 +52,17 @@ public class CommandsPanel extends JPanel {
 
     command = new JPanel();
 
+    victim = new JLabel("Latest LRU Victim:");
+
+    ref = new JLabel("Mem References");
+
     next = new JButton("Next Input");
 
     runf = new JButton("Run to Next Page Fault");
 
     runc = new JButton("Run to Completion");
 
-    ref = new JLabel("Mem References will appear here");
+    exit = new JButton("Exit");
 
     setStandards();
 
@@ -62,10 +70,12 @@ public class CommandsPanel extends JPanel {
     setLayout(new GridLayout(row,col));
 
     // Add the components.
+    add(victim);
     add(ref);
     add(next);
     add(runf);
     add(runc);
+    add(exit);
 
     setVisible(true);
 
@@ -77,10 +87,11 @@ public class CommandsPanel extends JPanel {
   * @return an array of the action buttons.
   ********************************************/
   public JButton [] sendButtons () {
-    JButton [] actionButtons = new JButton[3];
+    JButton [] actionButtons = new JButton[4];
     actionButtons[0] = next;
     actionButtons[1] = runf;
     actionButtons[2] = runc;
+    actionButtons[3] = exit;
     return actionButtons;
   }
 
@@ -89,20 +100,24 @@ public class CommandsPanel extends JPanel {
   ***************************************/
   private void setStandards () {
 
-    ref.setFont(HEADER_FONT);
+    Border line = BorderFactory.createLineBorder(Color.WHITE, 2, true);
+    victim.setFont(NORMAL_FONT);
+    victim.setBorder(line);
+    ref.setFont(NORMAL_FONT);
     next.setFont(NORMAL_FONT);
     runf.setFont(NORMAL_FONT);
     runc.setFont(NORMAL_FONT);
+    exit.setFont(NORMAL_FONT);
   }
 
-  /********************************
-  * Sets the size for the buttons.
-  *******************************
-  private void setBtnSize () {
-    next.setSize(bSize, bSize);
-    runf.setSize(bSize, bSize);
-    runc.setSize(bSize, bSize);
-  }*/
+  /*******************************************
+  * Updates the latest LRU victim.
+  * @param vic is the victim that was picked.
+  ********************************************/
+  public void setVictim( int vic ) {
+    victim.setText("LRU Victim --> Frame " + vic );
+  }
+
 
   /**************************************************
   * Resets the label for the memory reference
