@@ -58,7 +58,7 @@ public class PageTableStatePanel extends JPanel {
     pidLabel.setFont(HEADER_FONT);
     pidLabel.setBackground(LAKER_BLUE);
     for ( i = 0 ; i < max ; i++ ) {
-      pairs[i] = new JLabel(""+i, SwingConstants.CENTER);
+      pairs[i] = new JLabel("", SwingConstants.CENTER);
       setStandards(pairs[i]);
       add(pairs[i]);
     }
