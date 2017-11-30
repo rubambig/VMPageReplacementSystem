@@ -1,6 +1,6 @@
 # VMPageReplacementSystem(ViMPaReS)
 
-**Note: The aim of the project was to demonstrate an understanding of page replacement, especially LRU replacement and pure demand paging. Specifically, the project is an animation of the Figure 8.6 of the Operating Systems Concepts Essentials, 2nd Edition book by Silberschatz. The system was built as an easy way to explain the idea of page replacement to user with elementary background on Operating Systems concepts i.e. processes, paging, virtual memory, etc. 
+**Note: The aim of the project was to demonstrate an understanding of page replacement, especially LRU replacement and pure demand paging. Specifically, the project is an animation of the Figure 8.6 of the Operating Systems Concepts Essentials, 2nd Edition book by Silberschatz. The system was built as an easy way to explain the idea of page replacement to user with elementary background on Operating Systems concepts i.e. processes, paging, virtual memory, etc.**
 
 ## A. Summary
 1. Implements virtual memory simulation with LRU page replacement.
@@ -11,11 +11,11 @@
 
 4. The system implements global frame allocation, pure demand paging, LRU page replacement.
 
-**- Global frame allocation**: We map pages to frames as frames are available, this is achieve by simulating pseudorandomness when checking for a free frame. After a few unsuccessful attempts, the program looks for a free frame sequentially. 
+**4.a. Global frame allocation**: We map pages to frames as frames are available, this is achieve by simulating pseudorandomness when checking for a free frame. After a few unsuccessful attempts, the program looks for a free frame sequentially. 
 
-**- Pure demand paging**: We only bring pages for a process as they are requested by the process. This simplified the data structure design since we can just add or remove entries to the process' page tables as the pages come in and are assigned frames in the frame table(physical memory).
+**4.b. Pure demand paging**: We only bring pages for a process as they are requested by the process. This simplified the data structure design since we can just add or remove entries to the process' page tables as the pages come in and are assigned frames in the frame table(physical memory).
 
-**- LRU page replacement**: When a page fault occurs and there are no free frames, we "choose a victim" for replacement by choosing the least recently used process/page pair i.e. the frame containing such a pair. This is achieved by popping the head of the LRU queue and updating the page tables of the victim and replacing processes.
+**4.c. LRU page replacement**: When a page fault occurs and there are no free frames, we "choose a victim" for replacement by choosing the least recently used process/page pair i.e. the frame containing such a pair. This is achieved by popping the head of the LRU queue and updating the page tables of the victim and replacing processes.
 
 5. At the completion of an input run of memory references, the system displays the total number of references made by each process and its total number of page faults i.e. final stats on the current performance of the system. 
 
