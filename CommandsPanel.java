@@ -107,7 +107,6 @@ public class CommandsPanel extends JPanel {
     next.setFont(NORMAL_FONT);
     next.setForeground(Color.GREEN);
     runf.setFont(NORMAL_FONT);
-    runf.setForeground(Color.ORANGE);
     runc.setFont(NORMAL_FONT);
     exit.setFont(NORMAL_FONT);
     exit.setForeground(Color.RED);

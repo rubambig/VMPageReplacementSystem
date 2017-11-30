@@ -2,7 +2,9 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
+
 import java.awt.Font;
+import java.awt.Color;
 /*********************************************
 * The panel for the final statistics after an
 * input run.
@@ -88,6 +90,40 @@ public class FinalStatsPanel extends JPanel {
       int totalFaults = pcbtable[i].getTotalPageFaults();
       display = pid + "    |    " + totalRefs + "    |    " + totalFaults;
       pairs[i].setText(display);
+      //Set the color based on the process number.
+      pairs[i].setForeground( customizeFont(pid) );
     }
+  }
+
+  /**************************************
+  * Customizes the font of the label based
+  * on the process number.
+  * @param pid is the process id.
+  ***************************************/
+  private Color customizeFont( int pid ) {
+    Color myColor = Color.BLACK;
+    switch ( pid ) {
+      case 1: myColor = Color.BLACK;
+              break;
+      case 2: myColor = Color.BLUE;
+              break;
+      case 3: myColor = Color.CYAN;
+              break;
+      case 4: myColor = Color.DARK_GRAY;
+              break;
+      case 5: myColor = Color.GREEN;
+              break;
+      case 6: myColor = Color.MAGENTA;
+              break;
+      case 7: myColor = Color.ORANGE;
+              break;
+      case 8: myColor = Color.PINK;
+              break;
+      case 9: myColor = Color.YELLOW;
+              break;
+      default: myColor = Color.BLACK;
+              break;
+    }
+    return myColor;
   }
 }
