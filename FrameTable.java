@@ -70,7 +70,7 @@ public class FrameTable {
   public int getFreeFrame() {
     int i, j;
 
-    // Simulate pseudorandomness
+    /*// Simulate pseudorandomness
     Random rnd = new Random();
     i = 0;
     while ( i < randomLimit ) {
@@ -79,11 +79,12 @@ public class FrameTable {
         return freeFrame;
       }
       i++;
-    }
+    }*/
 
     // Try sequentially after 16 unsuccessful "random" picks.
     for ( j = 0; j < max; j++) {
       if ( isFree(j) ) {
+        System.out.println("Free frame returned is " + j);
         return j;
       }
     }
@@ -139,6 +140,7 @@ public class FrameTable {
   * @param frame is the frame to be added.
   ****************************************/
   public void addCandidate(int frame) {
+    this.kicker.remove(frame);
     this.kicker.add(frame);
   }
 

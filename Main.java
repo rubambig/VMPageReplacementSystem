@@ -51,6 +51,7 @@ public class Main {
 
     // The string that will produce the integers to be used
     String newLine  = (line.replaceAll(":\t", "")).substring(1);
+    System.out.println("Read new line is " + newLine);
 
     // The array that will store the pid and page requested.
     Integer [] mapping = new Integer[2];

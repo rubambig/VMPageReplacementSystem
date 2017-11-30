@@ -124,7 +124,7 @@ public class Controller implements ActionListener {
   private boolean isFault ( int procNum, int pageNum ) {
 
     // Check if there is a free frame.
-    int freeFrame = table.checkFreeFrame();
+    int freeFrame;
 
     if ( table.checkPageInTable( procNum, pageNum) ) { // Check in memory
 
@@ -134,7 +134,7 @@ public class Controller implements ActionListener {
       // The page is in memory. No page fault.
       return false;
 
-    } else if ( freeFrame >= 0 ) { // Check if there are free frames.
+    } else if ( (freeFrame = table.checkFreeFrame()) >= 0 ) {
 
       // Handles the case of a page fault with free frames available.
       this.handleFreeFrameAvailable(procNum, pageNum, freeFrame);
