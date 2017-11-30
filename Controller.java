@@ -66,9 +66,11 @@ public class Controller implements ActionListener {
   /**************************************************
   * Instructs the GUI to display the latest state of
   * the frame table i.e. physical memory.
+  * @param fault color the frame based on fault kind.
+  * @param frame is the frame that needs coloring.
   *************************************************/
-  public void updateFrameTable () {
-    gui.displayFrameTable(table.passFrameTable());
+  public void updateFrameTable (boolean fault, int frame) {
+    gui.displayFrameTable(table.passFrameTable(), fault, frame);
   }
 
   /*********************************************
@@ -202,7 +204,7 @@ private void handleFreeFrameAvailable( int pid, int page, int freeFrame ) {
   this.updatePageTable(pid);
 
   // Display the frame table with the new updates.
-  this.updateFrameTable();
+  this.updateFrameTable(false, -1);
 
 }
 
@@ -223,38 +225,40 @@ private void handlePageReplacement( int procNum, int pageNum ) {
   table.updateProcessRefCount(procNum);
 
   // Find a victim.
-  int victim = table.pickVictim();
+  int [] victimInfo = table.pickVictim();
+
+  int victimFrame = victimInfo[0];
 
   // Notify the GUI that a victim was picked.
-  this.notifyGUI(victim);
+  this.notifyGUI(victimInfo);
 
   // Send the victim a message to update their page table.
-  int [] replacementPair = table.searchVictimPair(victim);
+  int [] replacementPair = table.searchVictimPair(victimFrame);
   int pid = replacementPair[0];
   int page = replacementPair[1];
-  table.updatePageTable(true, pid, page, victim);
+  table.updatePageTable(true, pid, page, victimFrame);
 
   // Send a message to the replacing process to update their page table.
-  table.updatePageTable(false, procNum, pageNum, victim);
+  table.updatePageTable(false, procNum, pageNum, victimFrame);
 
   // Update the frame table.
-  table.updateFrameTable(victim, procNum, pageNum);
+  table.updateFrameTable(victimFrame, procNum, pageNum);
 
   // Add the reference frame to LRU Queue as a replacement candidate.
-  table.addCandidateFrame(victim);
+  table.addCandidateFrame(victimFrame);
 
   // Update the page/frame table on the GUI.
   this.updatePageTable(procNum);
-  this.updateFrameTable();
+  this.updateFrameTable(true, victimFrame);
 
 }
 
 /***************************************************
 * Notifies the GUI that a page replacement occured.
 * GUI Updates who was the victim on the replacement.
-* @param vic is the victim that was picked.
+* @param vic is info about the victim that was picked.
 ****************************************************/
-public void notifyGUI( int vic ) {
+public void notifyGUI( int [] vic ) {
   gui.displayVictim(vic);
 }
 

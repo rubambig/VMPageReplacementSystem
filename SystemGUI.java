@@ -96,7 +96,7 @@ public class SystemGUI extends JFrame {
   private void setBoundaries () {
     memory.setBackground(LAKER_BLUE);
     stats.setBackground(LAKER_BLUE);
-    commands.setBackground(LAKER_BLUE);
+    commands.setBackground(Color.LIGHT_GRAY);
 
     Border line = BorderFactory.createLineBorder(Color.WHITE, 4, true);
     Border matte = BorderFactory.createRaisedBevelBorder();
@@ -120,9 +120,13 @@ public class SystemGUI extends JFrame {
   * Gets a reference to the frame table i.e. current
   * physical state of memory.
   * Passes the frame table to the physical state panel.
+  * @param fTable is the frame table.
+  * @param fault is the kind of fault.
+  * @param frame is frame that potentiall needs to be
+  * colored for the user.
   *****************************************************/
-  public void displayFrameTable (Frame [] fTable) {
-    memory.redrawTable(fTable);
+  public void displayFrameTable (Frame [] fTable, boolean fault, int frame) {
+    memory.redrawTable(fTable, fault, frame);
   }
 
   /**************************************************
@@ -142,11 +146,11 @@ public class SystemGUI extends JFrame {
     stats.displayFinalStats(pcbArray);
   }
 
-  /********************************************
+  /*****************************************************
   * Passes the victim to the commands panel.
-  * @param vic is the victim that was picked.
-  *********************************************/
-  public void displayVictim( int vic ) {
+  * @param vic is info about the victim that was picked.
+  ******************************************************/
+  public void displayVictim( int [] vic ) {
     commands.setVictim(vic);
   }
 }

@@ -70,7 +70,7 @@ public class FrameTable {
   public int getFreeFrame() {
     int i, j;
 
-    /*// Simulate pseudorandomness
+    // Simulate pseudorandomness
     Random rnd = new Random();
     i = 0;
     while ( i < randomLimit ) {
@@ -79,7 +79,7 @@ public class FrameTable {
         return freeFrame;
       }
       i++;
-    }*/
+    }
 
     // Try sequentially after 16 unsuccessful "random" picks.
     for ( j = 0; j < max; j++) {

@@ -13,6 +13,9 @@ public class Tables {
   /* The frame table. */
   private FrameTable frameTable;
 
+  /* The maximum number of frames. */
+  private final int max = 16;
+
   /*******************************************************
   * Instantiates a unified table for frame/process tables.
   * To be used as a unified data structure that initiates
@@ -120,8 +123,19 @@ public class Tables {
   * Picks a victim for  LRU page replacement.
   * @return the frame that needs to be updated.
   *********************************************/
-  public int pickVictim () {
-    return this.frameTable.pickLRUCandidate();
+  public int [] pickVictim () {
+    int [] victimInfo = new int[3];
+    victimInfo[0] = this.frameTable.pickLRUCandidate();
+
+    // Search for the victim's pid and pair
+    int i;
+    for ( i = 0; i < max; i++ ) {
+      if ( i == victimInfo[0] ) { // We've found the correct frame.
+        victimInfo[1] = this.frameTable.getFrameTable()[i].getPID();
+        victimInfo[2] = this.frameTable.getFrameTable()[i].getPage();
+      }
+    }
+    return victimInfo;
   }
 
   /**********************************************************

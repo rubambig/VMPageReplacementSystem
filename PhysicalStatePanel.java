@@ -81,16 +81,26 @@ public class PhysicalStatePanel extends JPanel {
   /***********************************************
   * Repaints the frame table as new changes occur.
   * @param table is the frame table.
+  * @param fault is the kind of fault.
+  * @param frame is frame that potentiall needs to be
+  * colored for the user.
   ************************************************/
-  public void redrawTable ( Frame[] table ) {
+  public void redrawTable ( Frame[] table, boolean fault, int frame ) {
 
     // Repaint the frame table
+    resetFont(pairs);
     int i;
     for ( i = 0; i < rowMax; i++ ) {
       int pid = table[i].getPID();
       int page = table[i].getPage();
       String display = "Frame " + i + " P" + pid + "  Page " + page;
       pairs[i].setText(display);
+
+      //Set the color based on the process number.
+      pairs[i].setForeground( customizeFont(pid) );
+    }
+    if ( fault ) { // A hard fault occured
+      pairs[frame].setForeground(Color.RED);
     }
   }
 
@@ -101,5 +111,48 @@ public class PhysicalStatePanel extends JPanel {
   private void setStandards ( JLabel field) {
     field.setFont(NORMAL_FONT);
     field.setBorder(CREATE_EMPTY_BORDER);
+  }
+
+  /*******************************************
+  * Resets the font all the frames.
+  * @param fArray is the array of frame labels.
+  ********************************************/
+  private void resetFont ( JLabel [] fArray ) {
+    int i;
+    for ( i = 0; i < rowMax; i++ ) {
+      fArray[i].setForeground(Color.BLACK);
+    }
+  }
+
+  /**************************************
+  * Customizes the font of the label based
+  * on the process number.
+  * @param pid is the process id.
+  ***************************************/
+  private Color customizeFont( int pid ) {
+    Color myColor = Color.BLACK;
+    switch ( pid ) {
+      case 1: myColor = Color.BLACK;
+              break;
+      case 2: myColor = Color.BLUE;
+              break;
+      case 3: myColor = Color.CYAN;
+              break;
+      case 4: myColor = Color.DARK_GRAY;
+              break;
+      case 5: myColor = Color.GREEN;
+              break;
+      case 6: myColor = Color.MAGENTA;
+              break;
+      case 7: myColor = Color.ORANGE;
+              break;
+      case 8: myColor = Color.PINK;
+              break;
+      case 9: myColor = Color.YELLOW;
+              break;
+      default: myColor = Color.BLACK;
+              break;
+    }
+    return myColor;
   }
 }

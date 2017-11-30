@@ -21,9 +21,13 @@ public class CommandsPanel extends JPanel {
   /** Objects of the class are now serializable. */
   private static final long serialVersionUID = 1L;
 
-  /** The font for most text in the GUI. */
+  /** The font for user commands the GUI. */
   private static final Font NORMAL_FONT =
   new Font("Cooper Black", Font.BOLD, 20);
+
+  /** The font for user commands the GUI. */
+  private static final Font VICTIM_FONT =
+  new Font("Cooper Black", Font.BOLD, 15);
 
   /** The panel for the commands. */
   private JPanel command;
@@ -97,7 +101,7 @@ public class CommandsPanel extends JPanel {
   private void setStandards () {
 
     Border line = BorderFactory.createLineBorder(Color.WHITE, 2, true);
-    victim.setFont(NORMAL_FONT);
+    victim.setFont(VICTIM_FONT);
     victim.setBorder(line);
     ref.setFont(NORMAL_FONT);
     next.setFont(NORMAL_FONT);
@@ -111,10 +115,14 @@ public class CommandsPanel extends JPanel {
 
   /*******************************************
   * Updates the latest LRU victim.
-  * @param vic is the victim that was picked.
+  * @param vic is info about the victim that was picked.
   ********************************************/
-  public void setVictim( int vic ) {
-    victim.setText("LRU Victim --> Frame " + vic );
+  public void setVictim( int [] vic ) {
+    int frame = vic[0];
+    int pid = vic[1];
+    int page = vic[2];
+    victim.setText("LRU Victim:" +  " P" + pid + " Page " + page );
+    victim.setForeground(Color.RED);
   }
 
   /**************************************************
