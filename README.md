@@ -11,11 +11,11 @@
 
 4. The system implements global frame allocation, pure demand paging, LRU page replacement.
 
-**4.a. Global frame allocation**: We map pages to frames as frames are available, this is achieve by simulating pseudorandomness when checking for a free frame. After a few unsuccessful attempts, the program looks for a free frame sequentially. 
++ **Global frame allocation**: We map pages to frames as frames are available, this is achieve by simulating pseudorandomness when checking for a free frame. After a few unsuccessful attempts, the program looks for a free frame sequentially. 
 
-**4.b. Pure demand paging**: We only bring pages for a process as they are requested by the process. This simplified the data structure design since we can just add or remove entries to the process' page tables as the pages come in and are assigned frames in the frame table(physical memory).
++ **Pure demand paging**: We only bring pages for a process as they are requested by the process. This simplified the data structure design since we can just add or remove entries to the process' page tables as the pages come in and are assigned frames in the frame table(physical memory).
 
-**4.c. LRU page replacement**: When a page fault occurs and there are no free frames, we "choose a victim" for replacement by choosing the least recently used process/page pair i.e. the frame containing such a pair. This is achieved by popping the head of the LRU queue and updating the page tables of the victim and replacing processes.
++ **LRU page replacement**: When a page fault occurs and there are no free frames, we "choose a victim" for replacement by choosing the least recently used process/page pair i.e. the frame containing such a pair. This is achieved by popping the head of the LRU queue and updating the page tables of the victim and replacing processes.
 
 5. At the completion of an input run of memory references, the system displays the total number of references made by each process and its total number of page faults i.e. final stats on the current performance of the system. 
 
