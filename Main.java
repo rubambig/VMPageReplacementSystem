@@ -50,8 +50,7 @@ public class Main {
   private static void sanitizeInput ( String line, Queue<Integer[]> queue ) {
 
     // The string that will produce the integers to be used
-    String newLine  = (line.replaceAll(":\t", "")).substring(1);
-    System.out.println("Read new line is " + newLine);
+    String newLine  = (line.replaceAll(":\\s", "")).substring(1);
 
     // The array that will store the pid and page requested.
     Integer [] mapping = new Integer[2];

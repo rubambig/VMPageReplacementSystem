@@ -25,6 +25,14 @@ public class FinalStatsPanel extends JPanel {
   private static final Font HEADER_FONT =
     	new Font("Cooper Black", Font.BOLD, 20);
 
+  /** LIGHT_GOLD color. */
+  private static final java.awt.Color LIGHT_GOLD =
+    new java.awt.Color(255, 153, 51);
+
+  /** LIGHT_GOLD color. */
+  private static final java.awt.Color CAMO_GREEN =
+  new java.awt.Color(153, 153, 0);
+
   /** The number of total processes to be displayed. */
   private int max = 10;
 
@@ -103,13 +111,13 @@ public class FinalStatsPanel extends JPanel {
   private Color customizeFont( int pid ) {
     Color myColor = Color.BLACK;
     switch ( pid ) {
-      case 1: myColor = Color.BLACK;
+      case 1: myColor = LIGHT_GOLD;
               break;
       case 2: myColor = Color.BLUE;
               break;
       case 3: myColor = Color.CYAN;
               break;
-      case 4: myColor = Color.DARK_GRAY;
+      case 4: myColor = CAMO_GREEN;
               break;
       case 5: myColor = Color.GREEN;
               break;

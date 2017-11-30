@@ -33,7 +33,7 @@ public class PhysicalStatePanel extends JPanel {
 
   /** The font for most text in the GUI. */
   private static final Font NORMAL_FONT =
-  new Font("Cooper Black", Font.PLAIN, 18);
+  new Font("Cooper Black", Font.PLAIN, 14);
 
   /** The font for most text in the GUI. */
   private static final Font HEADER_FONT =
@@ -46,6 +46,14 @@ public class PhysicalStatePanel extends JPanel {
   /** The GV blue color. */
   private static final java.awt.Color LAKER_BLUE =
   new java.awt.Color(0, 101, 164);
+
+  /** LIGHT_GOLD color. */
+  private static final java.awt.Color LIGHT_GOLD =
+  new java.awt.Color(255, 153, 51);
+
+  /** LIGHT_GOLD color. */
+  private static final java.awt.Color CAMO_GREEN =
+  new java.awt.Color(153, 153, 0);
 
   /***************************************
   * Instantiates the physical state panel.
@@ -132,13 +140,13 @@ public class PhysicalStatePanel extends JPanel {
   private Color customizeFont( int pid ) {
     Color myColor = Color.BLACK;
     switch ( pid ) {
-      case 1: myColor = Color.BLACK;
+      case 1: myColor = LIGHT_GOLD;
               break;
       case 2: myColor = Color.BLUE;
               break;
       case 3: myColor = Color.CYAN;
               break;
-      case 4: myColor = Color.DARK_GRAY;
+      case 4: myColor = CAMO_GREEN;
               break;
       case 5: myColor = Color.GREEN;
               break;

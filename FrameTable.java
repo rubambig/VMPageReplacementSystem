@@ -19,9 +19,6 @@ public class FrameTable {
   /** The max amount of frames to be created. */
   private int max = 16;
 
-  /** The max number of times we simulate searching for a frame. */
-  private final int randomLimit = 10000;
-
   /** The list of free frames in the system. */
   private boolean [] freeFrameList;
 
@@ -73,7 +70,7 @@ public class FrameTable {
     // Simulate pseudorandomness
     Random rnd = new Random();
     i = 0;
-    while ( i < randomLimit ) {
+    while ( i < max ) {
       int freeFrame = rnd.nextInt(max);
       if ( isFree(freeFrame) ) {
         return freeFrame;
